@@ -13,6 +13,7 @@ const registerUser = asyncHandler(async (req, res) => {
     }
     const userExists = await authModel.findOne({ email })
 
+    //check if user account exists in the database
     if (userExists) {
         res.status(400);
         throw new Error("User already exists!")
@@ -53,6 +54,8 @@ const loginUser = asyncHandler( async(req,res) => {
 
     const user = await authModel.findOne({ email })
 
+    //if the entered password and the one hashed in the database match, sign it using the JWT secret key and send it as a cookie
+    //in the response and return other user details entered in json format
     if( user && await bcrypt.compare(password, user.password) ){
         const { password, ...others } = user._doc
         const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, { expiresIn: '1d' })
