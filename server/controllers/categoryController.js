@@ -16,7 +16,8 @@ const createCategory = asyncHandler( async (req, res) => {
 //update category 
 const updateCategory = asyncHandler(async (req, res) => {
     try {
-        const updatedCategory = await categoryModel(req.body, {new: true})
+        const updatedCategory = await categoryModel(req.params.id, req.body, {new: true})
+        res.status(200).json(updatedCategory)
     } catch (err) {
         res.status(400)
         throw new Error(err.message)
