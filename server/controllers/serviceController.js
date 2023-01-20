@@ -3,31 +3,58 @@ const asyncHandler = require('express-async-handler')
 
 //create new service
 const createService = asyncHandler(async (req, res) => {
-    const Service = new serviceModel(req.body)
+    const service = new serviceModel({
+        ...req.body,
+        freelancer: req.user //this is done to associate the service with the freelancer who created it
+    })
     try {
-        const saveService = await Service.save()
-        res.status(200).json(saveService)
+        await service.save()
+        res.status(201).json(service)
     } catch (err) {
-        res.status(400)
-        throw new Error(err.message)        
+        res.status(400).json(err.message)        
     }
 })
 
 //update new service
 const updateService = asyncHandler(async (req, res) => {
-    try {
-        const updatedService = await serviceModel(req.params.id, req.body, { new: true })
-        res.status(200).json(updatedService)
-    } catch (err) {
-        res.status(400)
-        throw new Error(err.message)
+    const updates = Object.keys(req.body)
+    const allowedUpdates = ["name", "description", "price", "duration", "category"]
+    const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
+    if(!isValidOperation) {
+        return res.status(400).json({error: "Invalid updates!"})
     }
+    try {
+        const service = await serviceModel.findOne({
+            _id: req.params.id,
+            freelancer: req.user._id
+        })
+        if(!service) {
+            return res.status(404).json({error : "The service you wanted to update does not exist"})
+        }
+        updates.forEach((update) => (service[update] = req.body[update]))
+        await service.save()
+        res.json(service)
+    } catch (err) {
+        res.status(400).json(err.message)        
+    }
+
+    
+  //  try {
+    //     const updatedService = await serviceModel(req.params.id, req.body, { new: true })
+    //     res.status(200).json(updatedService)
+    // } catch (err) {
+    //     res.status(400)
+    //     throw new Error(err.message)
+    // }
 })
 
 //delete service
 const deleteService = asyncHandler(async (req, res) => {
     try {
-        await serviceModel.findByIdAndDelete(req.params.id)
+        await serviceModel.findByIdAndDelete({
+            _id: req.params.id,
+            freelancer: req.user._id
+        })
         res.status(200).json("Service has been successfully deleted!")
     } catch (err) {
         res.status(400)
@@ -35,21 +62,26 @@ const deleteService = asyncHandler(async (req, res) => {
     }
 })
 
-//get single service
+//get single servive
 const getService = asyncHandler(async (req, res) => {
     try {
-        const Service = await serviceModel.findOne({ id: req.user.id })
+        const Service = await serviceModel.findOne({
+             _id: req.params.id,
+             freelancer: req.user._id
+        })
         res.status(200).json(Service)
-    } catch (error) {
+    } catch (err) {
         res.status(400)
         throw new Error(err.message)
     }
 })
 
-//find services
-const getServices = asyncHandler(async (req, res) => {
+//get all services by one freelancer
+const getAllServices = asyncHandler(async (req, res) => {
     try {
-        const Services = await serviceModel.find()
+        const Services = await serviceModel.find({ 
+            freelancer: req.user._id
+        })
         res.status(200).json(Services)
     } catch (err) {
         res.status(400)
@@ -57,10 +89,11 @@ const getServices = asyncHandler(async (req, res) => {
     }
 })
 
+
 module.exports = {
     createService,
     updateService,
     deleteService,
     getService,
-    getServices
+    getAllServices
 }
