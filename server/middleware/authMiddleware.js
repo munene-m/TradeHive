@@ -2,25 +2,21 @@ const asyncHandler = require('express-async-handler')
 const authModel = require('../controllers/authController.js')
 const jwt = require('jsonwebtoken')
 
-const auth = asyncHandler( async (req, res) => {
-    let token
-    if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
-        token = req.headers.authorization.split(' ')[1]
-
+const protect = asyncHandler( async (req, res) => {
+    try {
+        const token = req.header("Authorization").replace("Bearer", "")
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
-
-        req.user = await User.findById(decoded.id).select('-password')
-
+        const user = await authModel.findOne({_id: decoded._id, "tokens.token": token})
+    
+        if(!user) {
+            throw new Error()
+        }
+        req.user = user
+        req.token = token
         next()
-    } else {
-        res.status(401)
-        throw new Error("Unauthorized attempt")
-    }
-
-    if(!token){
-        res.status(401)
-        throw new Error("No authorization without token")
+    } catch (error) {
+        res.status(401).json({ error: "PLease authenticate."})    
     }
 })
 
-module.exports = { auth }
+module.exports = { protect }
