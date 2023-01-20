@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const ServiceSchema = mongoose.Schema({
-    title: {
+    name: {
         type: String,
         required: true,
         trim: true //to remove any leading and trailing whitespaces from the string values before saving to DB
