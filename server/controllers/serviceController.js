@@ -40,12 +40,7 @@ const updateService = asyncHandler( async( req, res ) => {
     if(!user) {
         res.status(404);
         throw new Error("User not found");
-    };
-
-    // if(service.user !== user.id) {
-    //     res.status(401);
-    //     throw new Error(" User not authorized")
-    // };
+    }
 
     const updatedService = await serviceModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.status(200).json(updatedService);
@@ -64,12 +59,7 @@ const deleteService = asyncHandler( async( req, res ) => {
     if(!user) {
         res.status(404);
         throw new Error("User not found")
-    };
-
-    // if(service.user.toString() !== user.id) {
-    //     res.status(401);
-    //     throw new Error("User not authorized to perform this action");
-    // };
+    }
 
     await service.remove();
     res.status(200).json({ id: req.params.id })
