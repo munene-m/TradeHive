@@ -21,8 +21,7 @@ mongoose.connect(process.env.MONGO_URL, {
   })
   .then(console.log("connected to MONGO"))
   .catch((err) => console.log(err));
-
-
+  
 app.use("/auth", authRoute)
 app.use("/services", serviceRoute)
 app.use("/categories", categoryRoute)
