@@ -11,7 +11,6 @@ const generateToken = asyncHandler(async(req, res, next) => {
             Authorization: `Basic ${auth}`
         }
     }).then((response) => {
-        console.log(response.data.access_token)
         req.token = response.data.access_token
         next()
     }).catch((err) => {
