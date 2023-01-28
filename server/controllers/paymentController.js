@@ -50,18 +50,18 @@ const makePayment = asyncHandler( async (req, res) => {
         console.log(err.message)
         return res.status(400).json(err.message)
     })
-        const payment = await paymentModel.create({
-            amount,
-            phone,
-        })
-        if (payment) {
-        return res.status(200).json({
-            _id: payment.id,
-            phone: payment.phone,
-            status: payment.status,
-            transactionId: payment.transactionId
-        })
-    }
+    //     const payment = await paymentModel.create({
+    //         amount,
+    //         phone,
+    //     })
+    //     if (payment) {
+    //     return res.status(200).json({
+    //         _id: payment.id,
+    //         phone: payment.phone,
+    //         status: payment.status,
+    //         transactionId: payment.transactionId
+    //     })
+    // }
 
 })
 
