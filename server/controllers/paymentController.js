@@ -11,6 +11,7 @@ const makePayment = asyncHandler( async (req, res) => {
 
     const phone = req.body.phone.substring(1)
     const amount = req.body.amount
+    let token = req.token
     const date = new Date()
     const timestamp = date.getFullYear() +
         ("0" + (date.getMonth() + 1)).slice(-2) +
@@ -24,31 +25,30 @@ const makePayment = asyncHandler( async (req, res) => {
     await axios.post(
         "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
         {
-            BusinessShortCode: shortcode,
-            Password: password,
-            Timestamp: timestamp,
-            TransactionType: "CustomerPayBillOnline",
-            Amount: amount,
-            PartyA: `254${phone}`,
-            PartyB: shortcode,
-            PhoneNumber: `254${phone}`,
-            CallBackURL: "https://mydomain.com/pat",
-            AccountReference: `254${phone}`,
-            TransactionDesc: "Test"
+            "BusinessShortCode": shortcode,
+            "Password": password,
+            "Timestamp": timestamp,
+            "TransactionType": "CustomerPayBillOnline",
+            "Amount": amount,
+            "PartyA": `254${phone}`,
+            "PartyB": shortcode,
+            "PhoneNumber": `254${phone}`,
+            "CallBackURL": "https://5532-41-90-187-218.in.ngrok.io/payment/stk",
+            "AccountReference": `254${phone}`,
+            "TransactionDesc": "Test"
         },
         {
             headers: {
-                Authorization: `Bearer ${req.token}` //need to get this token from the generateToken function i have used as a 
-                //middleware
+                Authorization: `Bearer ${token}`
             }
         }
     ).then((data) => {
         console.log(data)
-        return res.status(200).json(data)
+        res.status(200).json(data)
     })
     .catch((err) => {
-        console.log(err.message)
-        return res.status(400).json(err.message)
+        console.log(err)
+        res.status(err.response.status).json(err.message)
     })
     //     const payment = await paymentModel.create({
     //         amount,

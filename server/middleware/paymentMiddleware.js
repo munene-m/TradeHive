@@ -1,7 +1,8 @@
 const axios = require('axios')
+const asyncHandler = require('express-async-handler')
 
 //middleware to generate token
-const generateToken = async(req, res, next) => {
+const generateToken = asyncHandler(async(req, res, next) => {
     const key = process.env.CONSUMER_KEY
     const secret = process.env.CONSUMER_SECRET
     const auth = new Buffer.from(`${key}:${secret}`).toString("base64")
@@ -15,9 +16,9 @@ const generateToken = async(req, res, next) => {
         next()
     }).catch((err) => {
         console.log(err);
-        return
+        // return
         // res.status(400).json(err.message)
     })
-}
+})
 
 module.exports = { generateToken }
