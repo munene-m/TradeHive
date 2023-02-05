@@ -1,3 +1,45 @@
+<script setup>
+import { reactive, computed } from "vue";
+import { useVuelidate } from '@vuelidate/core'
+import { required, sameAs, minLength, email, helpers } from '@vuelidate/validators'
+import { useAuthStore } from '../stores/auth'
+import { useRouter } from 'vue-router';
+
+const authStore = useAuthStore()
+const router = useRouter()
+
+const formData = reactive({
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: "",
+    confirmPassword: ""
+})
+const rules = computed(() => {
+    return{
+        firstname: { required: helpers.withMessage("First name is required", required) },
+        lastname: { required: helpers.withMessage("Last name is required", required) },
+        email: { required: helpers.withMessage("Email is required", required), email },
+        password: { required: helpers.withMessage("Password is required", required), minLength:minLength(6)},
+        confirmPassword: { required: helpers.withMessage("The entered passwords do not match", required), sameAs: sameAs(formData.password) }
+    }
+})
+const v$ = useVuelidate(rules, formData)
+const handleSubmit = async () =>{
+    const result = await v$.value.$validate()
+    if(result){
+        authStore.register(formData.firstname, formData.lastname, formData.email, formData.password)
+        router.push("/login")
+    }
+    setTimeout(() => {
+        formData.firstname = "",
+        formData.lastname = "",
+        formData.email = "",
+        formData.password  = "",
+        formData.confirmPassword = ""
+    }, 1000)
+}
+</script>
 <template>
   <div class="form">
     <div class="login-image">
@@ -9,29 +51,46 @@
       <label for="firstName">First name</label><br />
       <input
         type="text"
-        v-model="firstname"
+        v-model="formData.firstname"
         id="firstName"
         name="firstName"
-      /><br />
+      />
+      <p class="errorMsg" v-if="v$.firstname.$error">{{ v$.firstname.$errors[0].$message }}</p>
+      <br />
 
       <label for="firstname">Last name</label><br />
       <input
         type="text"
-        v-model="lastname"
+        v-model="formData.lastname"
         id="lastname"
         name="lastname"
-      /><br />
+      />
+      <p class="errorMsg" v-if="v$.lastname.$error">{{ v$.lastname.$errors[0].$message }}</p>
+      <br />
 
       <label for="email">Email address</label><br />
-      <input type="email" v-model="email" id="email" name="email" /><br />
+      <input type="email" v-model="formData.email" id="email" name="email" />
+      <p class="errorMsg" v-if="v$.email.$error">{{ v$.email.$errors[0].$message }}</p>
+      <br />
 
       <label for="password">Password</label><br />
       <input
         type="password"
-        v-model="password"
+        v-model="formData.password"
         id="password"
         name="password"
-      /><br />
+      />
+      <p class="errorMsg" v-if="v$.password.$error">{{ v$.password.$errors[0].$message }}</p>
+      <br />
+      <label for="confirmPassword">Confirm Password</label><br />
+      <input
+        type="password"
+        v-model="formData.confirmPassword"
+        id="confirmPassword"
+        name="confirmPassword"
+      />
+      <p class="errorMsg" v-if="v$.confirmPassword.$error">{{ v$.confirmPassword.$errors[0].$message }}</p>
+      <br />
 
       <p class="forgot">Forgot password?</p>
 
@@ -43,20 +102,13 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from "vue";
-
-const firstname = ref("");
-const lastname = ref("");
-const email = ref("");
-const password = ref("");
-</script>
 
 <style scoped>
 .form {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   min-height: 100vh;
+  padding-top:8rem;
 }
 .login-image {
   background-color: #f4605b;
@@ -107,6 +159,11 @@ input[type="email"] {
   outline: none;
   border-bottom: 2px solid #919191;
   line-height: 1.5em;
+}
+.errorMsg{
+    color: red;
+    font-size: 12px; 
+    margin:0;
 }
 .forgot {
   color: rgb(66, 66, 228);

@@ -7,15 +7,23 @@
     <form id="loginForm" @submit.prevent="handleSubmit">
       <h3>Log in</h3>
       <label for="email">Email address</label><br />
-      <input type="email" v-model="email" id="email" name="email" /><br />
+      <input type="email" v-model="formData.email" id="email" name="email" />
+      <p class="errorMsg" v-if="v$.email.$error">
+        {{ v$.email.$errors[0].$message }}
+      </p>
+      <br />
 
       <label for="password">Password</label><br />
       <input
         type="password"
-        v-model="password"
+        v-model="formData.password"
         id="password"
         name="password"
-      /><br />
+      />
+      <p class="errorMsg" v-if="v$.password.$error">
+        {{ v$.password.$errors[0].$message }}
+      </p>
+      <br />
 
       <p class="forgot">Forgot password?</p>
 
@@ -29,10 +37,41 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-// import Carousel from "./Carousel.vue";
-const email = ref("");
-const password = ref("");
+import { reactive, computed } from "vue";
+import { useVuelidate } from "@vuelidate/core";
+import { required, minLength, email, helpers } from "@vuelidate/validators";
+import { useAuthStore } from "../stores/auth";
+import { useRouter } from "vue-router";
+
+const authStore = useAuthStore();
+const router = useRouter();
+const formData = reactive({
+  email: "",
+  password: "",
+});
+const rules = computed(() => {
+  return {
+    email: {
+      required: helpers.withMessage("Email is required", required),
+      email,
+    },
+    password: {
+      required: helpers.withMessage("Password is required", required),
+      minLength: minLength(6),
+    },
+  };
+});
+const v$ = useVuelidate(rules, formData);
+const handleSubmit = async () => {
+    const result = await v$.value.$validate()
+    if(result){
+        authStore.login(formData.email, formData.password)
+    }
+    setTimeout(() => {
+        formData.email = "",
+        formData.password  = ""
+    }, 1000)
+};
 </script>
 
 <style scoped>
@@ -40,6 +79,7 @@ const password = ref("");
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   min-height: 100vh;
+  padding-top: 8rem;
 }
 .login-image {
   background-color: #f4605b;
@@ -89,6 +129,11 @@ input[type="email"] {
   border-bottom: 2px solid #919191;
   line-height: 1.5em;
 }
+.errorMsg {
+  color: red;
+  font-size: 12px;
+  margin: 0;
+}
 button[type="submit"] {
   width: 100%;
   background-color: #f4605b;
@@ -128,16 +173,16 @@ button[type="submit"]:hover {
     align-items: center;
     min-height: 50vh;
   }
-  .login-image{
+  .login-image {
     display: none;
   }
-  #loginForm{
+  #loginForm {
     margin-top: 5rem;
   }
 }
-@media only screen and (max-height: 1250px){
-    .form{
-        height:100%;
-    }
+@media only screen and (max-height: 1250px) {
+  .form {
+    height: 100%;
+  }
 }
 </style>
