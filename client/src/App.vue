@@ -10,7 +10,7 @@ import { RouterLink, RouterView } from "vue-router";
         <RouterLink class="heading" to="/">tradeHive</RouterLink>
         <div>
           <RouterLink class="loginBtn" to="/login">Log in</RouterLink>
-          <RouterLink class="registerBtn" to="/register">Register</RouterLink>
+          <RouterLink class="registerBtn" to="/register">Create account</RouterLink>
         </div>
   
       </nav>
@@ -49,10 +49,22 @@ nav > div{
 .registerBtn {
   padding:10px 20px;
   color: white;
-  background-color: crimson;
-  border: 2px solid crimson;
+  background-color: #F4605B;
+  border: 2px solid #F4605B;
   border-radius: 28px;
   margin-left: 12px;
   font-weight: bold;
+}
+@media only screen and (max-width: 768px) {
+  nav{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .loginBtn{
+    display: none;
+  }
 }
 </style>
