@@ -89,7 +89,7 @@ const handleSubmit = async () => {
   display: flex;
   align-items: center;
   height: 150px;
-  padding-top: 17rem;
+  padding-top: 15rem;
   margin: auto;
 }
 .login-image p {
@@ -105,7 +105,7 @@ const handleSubmit = async () => {
   /* border: 1px solid #919191; */
   border-radius: 8px;
   background: #fff;
-  margin-top: 11rem;
+  margin-top: 7rem;
 }
 
 form > h3 {
