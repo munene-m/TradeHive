@@ -66,6 +66,7 @@ const handleSubmit = async () => {
     const result = await v$.value.$validate()
     if(result){
         authStore.login(formData.email, formData.password)
+        router.push("/home-page")
     }
     setTimeout(() => {
         formData.email = "",
