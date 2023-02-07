@@ -1,0 +1,1 @@
+export const createServiceUrl = "http://localhost:3000/services/create"
