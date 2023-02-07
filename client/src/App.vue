@@ -1,5 +1,7 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
+import { useAuthStore } from "./stores/auth";
+const authStore = useAuthStore()
 </script>
 
 <template>
@@ -9,12 +11,10 @@ import { RouterLink, RouterView } from "vue-router";
         <RouterLink class="heading" to="/">tradeHive</RouterLink>
         <div>
           <RouterLink class="loginBtn" to="/login">Log in</RouterLink>
-          <RouterLink class="registerBtn" to="/register"
-            >Create account</RouterLink
-          >
+          <RouterLink class="registerBtn" to="/register">Create account</RouterLink>
         </div>
       </nav>
-      <div class="categories">
+      <div v-if="authStore.user" class="categories">
         <RouterLink to="/wood-work">Wood work</RouterLink>
         <RouterLink to="/metal-work">Metal work</RouterLink>
         <RouterLink to="/art">Art</RouterLink>
