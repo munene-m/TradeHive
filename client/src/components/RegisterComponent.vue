@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, computed } from "vue";
+import { reactive, computed, ref, watchEffect } from "vue";
 import { useVuelidate } from '@vuelidate/core'
 import { required, sameAs, minLength, email, helpers } from '@vuelidate/validators'
 import { useAuthStore } from '../stores/auth'
@@ -7,13 +7,23 @@ import { useRouter } from 'vue-router';
 
 const authStore = useAuthStore()
 const router = useRouter()
+const formClass = ref('form')
+const formBeforeAuthClass = ref('formBeforeAuth')
+const role = ref("")
+
+watchEffect(() => {
+  if(authStore.user){
+    router.push("/home-page")
+  }
+})
 
 const formData = reactive({
     firstname: "",
     lastname: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
+    role: ""
 })
 const rules = computed(() => {
     return{
@@ -29,7 +39,8 @@ const handleSubmit = async () =>{
     const result = await v$.value.$validate()
     if(result){
         authStore.register(formData.firstname, formData.lastname, formData.email, formData.password)
-        router.push("/login")
+        authStore.setRoles(role.value)
+        //router.push("/home-page")
     }
     setTimeout(() => {
         formData.firstname = "",
@@ -41,7 +52,7 @@ const handleSubmit = async () =>{
 }
 </script>
 <template>
-  <div class="form">
+  <div :class="[authStore.user ? formClass : '', formBeforeAuthClass]">
     <div class="login-image">
       <img src="../assets/images/Group 7.png" />
       <p>Sign up to get access to affordable labour or even sell your services!</p>
@@ -92,7 +103,11 @@ const handleSubmit = async () =>{
       <p class="errorMsg" v-if="v$.confirmPassword.$error">{{ v$.confirmPassword.$errors[0].$message }}</p>
       <br />
 
-      <p class="forgot">Forgot password?</p>
+      <input type="radio" name="role" value="Freelancer" id="freelancer" v-model="role" required>
+      <label id="labelRadio1" for="freelancer">Freelancer</label>
+
+      <input type="radio" name="role" value="Client" id="client" v-model="role">
+      <label id="labelRadio2" for="client">Client</label>
 
       <button id="signupBtn" type="submit">Create account</button>
       <p class="login">
@@ -109,6 +124,12 @@ const handleSubmit = async () =>{
   grid-template-columns: repeat(2, 1fr);
   min-height: 100vh;
   padding-top:8rem;
+}
+.formBeforeAuth{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  min-height: 100vh;
+  padding-top: 5rem;
 }
 .login-image {
   background-color: #f4605b;
@@ -148,7 +169,17 @@ label {
   display: block;
   font-size: 16px;
 }
-
+#labelRadio1, #labelRadio2{
+  display: inline;
+  cursor: pointer;
+}
+#labelRadio1{
+  margin-right: 12px;
+}
+#freelancer, #client{
+  accent-color: crimson;
+  cursor: pointer;
+}
 input[type="text"],
 input[type="password"],
 input[type="email"] {
@@ -164,15 +195,6 @@ input[type="email"] {
     color: red;
     font-size: 12px; 
     margin:0;
-}
-.forgot {
-  color: rgb(66, 66, 228);
-  text-align: end;
-  text-decoration: underline;
-  font-size: 14px;
-  cursor: pointer;
-  margin: 0;
-  margin-bottom: 6px;
 }
 button[type="submit"] {
   width: 100%;
@@ -195,8 +217,9 @@ button[type="submit"]:hover {
   text-align: center;
 }
 .login a {
-  color: rgb(236, 55, 91);
+  color: crimson;
   text-decoration: none;
+  font-weight: 600;
 }
 @media only screen and (max-width: 768px) {
   .form {
