@@ -1,7 +1,13 @@
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
+import { RouterLink, RouterView, useRouter } from "vue-router";
 import { useAuthStore } from "./stores/auth";
 const authStore = useAuthStore()
+const router = useRouter()
+
+const handleLogout = () => {
+  authStore.logOut()
+  router.push("/")
+}
 </script>
 
 <template>
@@ -9,9 +15,12 @@ const authStore = useAuthStore()
     <div class="wrapper">
       <nav>
         <RouterLink class="heading" to="/">tradeHive</RouterLink>
-        <div>
+        <div v-if="authStore.user === null">
           <RouterLink class="loginBtn" to="/login">Log in</RouterLink>
           <RouterLink class="registerBtn" to="/register">Create account</RouterLink>
+        </div>
+        <div v-else>
+          <a @click="handleLogout" class="logOutBtn">Log out</a>
         </div>
       </nav>
       <div v-if="authStore.user" class="categories">
@@ -72,6 +81,16 @@ nav > div {
   border-radius: 28px;
   margin-left: 12px;
   font-weight: bold;
+}
+.logOutBtn{
+  padding: 10px 20px;
+  color: white;
+  background-color: #f4605b;
+  border: 2px solid #f4605b;
+  border-radius: 28px;
+  margin-left: 12px;
+  font-weight: bold;
+  cursor: pointer
 }
 .categories {
   position: absolute;
