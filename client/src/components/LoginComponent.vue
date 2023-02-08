@@ -1,5 +1,52 @@
+<script setup>
+import { reactive, computed, ref, watchEffect } from "vue";
+import { useVuelidate } from "@vuelidate/core";
+import { required, minLength, email, helpers } from "@vuelidate/validators";
+import { useAuthStore } from "../stores/auth";
+import { useRouter } from "vue-router";
+
+const authStore = useAuthStore();
+const router = useRouter();
+const role = ref("")
+
+watchEffect(() => {
+  if (authStore.user !== null){
+    router.push("/home-page")
+  }
+})
+const formClass = ref('form')
+const formBeforeAuthClass = ref('formBeforeAuth')
+const formData = reactive({
+  email: "",
+  password: "",
+});
+const rules = computed(() => {
+  return {
+    email: {
+      required: helpers.withMessage("Email is required", required),
+      email,
+    },
+    password: {
+      required: helpers.withMessage("Password is required", required),
+      minLength: minLength(6),
+    },
+  };
+});
+const v$ = useVuelidate(rules, formData);
+const handleSubmit = async () => {
+    const result = await v$.value.$validate()
+    if(result){
+        authStore.login(formData.email, formData.password)
+    }
+    setTimeout(() => {
+        formData.email = "",
+        formData.password  = ""
+    }, 1000)
+};
+</script>
+
 <template>
-  <div class="form">
+  <div :class="[authStore.user ? formClass : '', formBeforeAuthClass]">
     <div class="login-image">
       <img src="../assets/images/Group 2.png" />
       <p>Your search for freelancers is over.</p>
@@ -25,6 +72,12 @@
       </p>
       <br />
 
+      <input type="radio" name="role" value="Freelancer" id="freelancer" v-model="role" required>
+      <label id="labelRadio1" for="freelancer">Freelancer</label>
+
+      <input type="radio" name="role" value="Client" id="client" v-model="role">
+      <label id="labelRadio2" for="client">Client</label>
+
       <p class="forgot">Forgot password?</p>
 
       <button id="signupBtn" type="submit">Log in</button>
@@ -36,44 +89,6 @@
   </div>
 </template>
 
-<script setup>
-import { reactive, computed } from "vue";
-import { useVuelidate } from "@vuelidate/core";
-import { required, minLength, email, helpers } from "@vuelidate/validators";
-import { useAuthStore } from "../stores/auth";
-import { useRouter } from "vue-router";
-
-const authStore = useAuthStore();
-const router = useRouter();
-const formData = reactive({
-  email: "",
-  password: "",
-});
-const rules = computed(() => {
-  return {
-    email: {
-      required: helpers.withMessage("Email is required", required),
-      email,
-    },
-    password: {
-      required: helpers.withMessage("Password is required", required),
-      minLength: minLength(6),
-    },
-  };
-});
-const v$ = useVuelidate(rules, formData);
-const handleSubmit = async () => {
-    const result = await v$.value.$validate()
-    if(result){
-        authStore.login(formData.email, formData.password)
-        router.push("/home-page")
-    }
-    setTimeout(() => {
-        formData.email = "",
-        formData.password  = ""
-    }, 1000)
-};
-</script>
 
 <style scoped>
 .form {
@@ -81,6 +96,12 @@ const handleSubmit = async () => {
   grid-template-columns: repeat(2, 1fr);
   min-height: 100vh;
   padding-top: 8rem;
+}
+.formBeforeAuth{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  min-height: 100vh;
+  padding-top: 5rem;
 }
 .login-image {
   background-color: #f4605b;
@@ -120,6 +141,17 @@ label {
   display: block;
   font-size: 16px;
 }
+#labelRadio1, #labelRadio2{
+  display: inline;
+  cursor: pointer;
+}
+#labelRadio1{
+  margin-right: 12px;
+}
+#freelancer, #client{
+  accent-color: crimson;
+  cursor: pointer;
+}
 input[type="password"],
 input[type="email"] {
   width: 100%;
@@ -155,6 +187,7 @@ button[type="submit"] {
   cursor: pointer;
   margin: 0;
   margin-bottom: 6px;
+  font-weight:600;
 }
 button[type="submit"]:hover {
   background-color: rgb(236, 55, 91);
@@ -164,8 +197,9 @@ button[type="submit"]:hover {
   text-align: center;
 }
 .createAcc a {
-  color: rgb(236, 55, 91);
+  color: crimson;
   text-decoration: none;
+  font-weight: 600;
 }
 @media only screen and (max-width: 768px) {
   .form {
