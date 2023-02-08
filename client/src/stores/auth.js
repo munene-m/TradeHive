@@ -7,6 +7,7 @@ export const useAuthStore = defineStore({
   state: () => ({
     user: JSON.parse(localStorage.getItem("token")),
     userDetails: "",
+    roles: null
   }),
 
   getters: {},
@@ -33,7 +34,7 @@ export const useAuthStore = defineStore({
       localStorage.removeItem("token");
     },
     async getUser() {
-      fetch("http://localhost:3000/auth/credentials", {
+      await fetch("http://localhost:3000/auth/credentials", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${this.user}`,
@@ -43,6 +44,9 @@ export const useAuthStore = defineStore({
         .then((response) => (this.userDetails = response.firstname))
         .catch((err) => console.log(err));
     },
+    setRoles(role) {
+      this.roles = role
+    }
   },
 });
 
