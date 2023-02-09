@@ -1,13 +1,14 @@
 <script setup>
 import { RouterLink, RouterView, useRouter } from "vue-router";
 import { useAuthStore } from "./stores/auth";
-const authStore = useAuthStore()
-const router = useRouter()
+import LogOut from "./assets/icons/LogOut.vue";
+const authStore = useAuthStore();
+const router = useRouter();
 
 const handleLogout = () => {
-  authStore.logOut()
-  router.push("/")
-}
+  authStore.logOut();
+  router.push("/");
+};
 </script>
 
 <template>
@@ -17,13 +18,16 @@ const handleLogout = () => {
         <RouterLink class="heading" to="/">tradeHive</RouterLink>
         <div v-if="authStore.user === null">
           <RouterLink class="loginBtn" to="/login">Log in</RouterLink>
-          <RouterLink class="registerBtn" to="/register">Create account</RouterLink>
+          <RouterLink class="registerBtn" to="/register"
+            >Create account</RouterLink
+          >
         </div>
         <div v-else>
-          <a @click="handleLogout" class="logOutBtn">Log out</a>
+          <a @click="handleLogout" class="logOutBtn">Log out <LogOut /></a>
         </div>
       </nav>
       <div v-if="authStore.user" class="categories">
+        <RouterLink class="homePage" to="/home-page">Home</RouterLink>
         <RouterLink to="/wood-work">Wood work</RouterLink>
         <RouterLink to="/metal-work">Metal work</RouterLink>
         <RouterLink to="/art">Art</RouterLink>
@@ -82,7 +86,7 @@ nav > div {
   margin-left: 12px;
   font-weight: bold;
 }
-.logOutBtn{
+.logOutBtn {
   padding: 10px 20px;
   color: white;
   background-color: #f4605b;
@@ -90,7 +94,10 @@ nav > div {
   border-radius: 28px;
   margin-left: 12px;
   font-weight: bold;
-  cursor: pointer
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  gap: 5px;
 }
 .categories {
   position: absolute;
@@ -105,6 +112,9 @@ nav > div {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+}
+.categories .homePage{
+  color: crimson;
 }
 .categories a {
   text-decoration: none;
