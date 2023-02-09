@@ -7,12 +7,12 @@ const MessageSchema = mongoose.Schema({
         trim: true
     }, 
     sender: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'Auth',
         required: true
     },
     receiver: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'Auth',
         required: true
     },
