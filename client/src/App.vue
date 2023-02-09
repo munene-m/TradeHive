@@ -1,7 +1,7 @@
 <script setup>
 import { RouterLink, RouterView, useRouter } from "vue-router";
 import { useAuthStore } from "./stores/auth";
-import LogOut from "./assets/icons/LogOut.vue";
+import LogOutIcon from "./assets/icons/LogOutIcon.vue";
 const authStore = useAuthStore();
 const router = useRouter();
 
@@ -23,7 +23,7 @@ const handleLogout = () => {
           >
         </div>
         <div v-else>
-          <a @click="handleLogout" class="logOutBtn">Log out <LogOut /></a>
+          <a @click="handleLogout" class="logOutBtn">Log out <LogOutIcon /></a>
         </div>
       </nav>
       <div v-if="authStore.user" class="categories">
