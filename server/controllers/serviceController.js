@@ -4,21 +4,22 @@ const asyncHandler = require('express-async-handler')
 
 //create new service
 const createService = asyncHandler(async (req, res) => {
-    const { name, description, price, duration, provider, category } = req.body
-    if(!name || !description || !price || !duration || !provider || !category) {
+    const { name, description, price, duration, currency, category } = req.body
+    if(!name || !description || !price || !duration || !currency || !category) {
         res.status(400)
         throw new Error("Please enter all required fields")
     }
     const service = await serviceModel.create({
-        name, description, price, duration, provider, category, user: req.user.id
+        name, description, price, currency, duration, category, user: req.user.id
     })
     if(service){
         res.status(201).json({
             _id: service.id,
             name: service.name,
             description: service.description,
+            price: service.price,
+            currency: service.currency,
             duration: service.duration,
-            provider: service.provider,
             category: service.category
         })
     } else {
