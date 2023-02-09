@@ -16,19 +16,23 @@ const ServiceSchema = mongoose.Schema({
         required: true,
         min: 0
     },
+    currency: {
+        type: String,
+        required: true,
+    },
     duration: {
         type: String,
         required: true
     },
-    provider: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Auth', //referencing the auth model
-        required: true
-    },
+    // provider: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'Auth', //referencing the auth model
+    //     required: true
+    // },
     category: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category',
-        required: true
+        type: String,
+        required: true,
+        trim: true
     },
     createdAt: {
         type: Date,
