@@ -19,6 +19,7 @@ const formBeforeAuthClass = ref('formBeforeAuth')
 const formData = reactive({
   email: "",
   password: "",
+  role: ""
 });
 const rules = computed(() => {
   return {
@@ -37,6 +38,7 @@ const handleSubmit = async () => {
     const result = await v$.value.$validate()
     if(result){
         authStore.login(formData.email, formData.password)
+        authStore.setRoles(role.value)
     }
     setTimeout(() => {
         formData.email = "",
