@@ -1,7 +1,7 @@
 <script setup>
 import { RouterLink, RouterView, useRouter } from "vue-router";
 import { useAuthStore } from "./stores/auth";
-import LogOutIcon from "./assets/icons/LogOutIcon.vue";
+import LogOutIcon from "./assets/icons/LogOut.vue"
 const authStore = useAuthStore();
 const router = useRouter();
 
