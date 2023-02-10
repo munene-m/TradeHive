@@ -7,7 +7,8 @@ export const useAuthStore = defineStore({
   state: () => ({
     user: JSON.parse(localStorage.getItem("token")),
     userDetails: "",
-    roles: null
+    clientRole: JSON.parse(localStorage.getItem("clientRole")),
+    freelancerRole: JSON.parse(localStorage.getItem("freelancerRole")),
   }),
 
   getters: {},
@@ -27,11 +28,13 @@ export const useAuthStore = defineStore({
       const response = await axios.post(loginUrl, { email, password });
       this.user = response.data.token;
       localStorage.setItem("token", JSON.stringify(response.data.token));
-      console.log(this.user);
+      // console.log(this.user);
     },
     async logOut() {
       this.user = null;
       localStorage.removeItem("token");
+      localStorage.removeItem("clientRole");
+      localStorage.removeItem("freelancerRole")
     },
     async getUser() {
       await fetch("http://localhost:3000/auth/credentials", {
@@ -45,8 +48,16 @@ export const useAuthStore = defineStore({
         .catch((err) => console.log(err));
     },
     setRoles(role) {
-      this.roles = role
-    }
+      if (role === "Client") {
+        this.clientRole = role;
+        localStorage.setItem("clientRole", JSON.stringify(role));
+      } else if(role === "Freelancer") {
+        this.freelancerRole = role;
+        localStorage.setItem("freelancerRole", JSON.stringify(role));
+      }
+      // this.roles = role
+      console.log(this.clientRole);
+    },
   },
 });
 
