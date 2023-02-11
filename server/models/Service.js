@@ -32,7 +32,8 @@ const ServiceSchema = mongoose.Schema({
     category: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        lowercase: true
     },
     createdAt: {
         type: Date,
