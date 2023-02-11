@@ -68,7 +68,7 @@ const deleteService = asyncHandler( async( req, res ) => {
 
 //get single servive
 const getService = asyncHandler(async (req, res) => {
-    const service = await serviceModel.findById(req.params.id)
+    const service = await serviceModel.find({category: req.params.value})
     if(!service) {
         res.status(400)
         throw new Error("Service not found")
