@@ -112,6 +112,7 @@ nav > div {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  z-index:100;
 }
 .categories .homePage{
   color: crimson;
