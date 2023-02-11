@@ -7,6 +7,8 @@ export const useAuthStore = defineStore({
   state: () => ({
     user: JSON.parse(localStorage.getItem("token")),
     userDetails: "",
+    userCategory: "",
+    services: "",
     clientRole: JSON.parse(localStorage.getItem("clientRole")),
     freelancerRole: JSON.parse(localStorage.getItem("freelancerRole")),
   }),
@@ -14,12 +16,13 @@ export const useAuthStore = defineStore({
   getters: {},
 
   actions: {
-    async register(firstname, lastname, email, password) {
+    async register(firstname, lastname, email, password, category) {
       const response = await axios.post(registerUrl, {
         firstname,
         lastname,
         email,
         password,
+        category
       });
       this.user = response.data.token;
       localStorage.setItem("token", JSON.stringify(response.data.token));
@@ -43,8 +46,11 @@ export const useAuthStore = defineStore({
           Authorization: `Bearer ${this.user}`,
         },
       })
-        .then((response) => response.json())
-        .then((response) => (this.userDetails = response.firstname))
+        .then(response => response.json())
+        .then(response => {
+          this.userDetails = response.firstname
+          this.userCategory = response.category
+          })
         .catch((err) => console.log(err));
     },
     setRoles(role) {
@@ -57,7 +63,19 @@ export const useAuthStore = defineStore({
       }
       // this.roles = role
       console.log(this.clientRole);
+      console.log(this.freelancerRole)
     },
+    async jobsInCategory() {
+      await fetch(`http://localhost:3000/services/service/${this.userCategory}`, {
+        method: "GET"
+      })
+      .then(response => response.json())
+      .then(response => {
+        this.services = response.data
+        console.log(this.services)
+        })
+      .catch((err) => console.log(err));
+    }
   },
 });
 
