@@ -7,15 +7,16 @@ import { useRouter } from "vue-router";
 
 const authStore = useAuthStore();
 const router = useRouter();
-const role = ref("")
+const role = ref("");
 
 watchEffect(() => {
-  if (authStore.user !== null){
-    router.push("/home-page")
+  if (authStore.user !== null) {
+    router.push("/home-page");
   }
-})
-const formClass = ref('form')
-const formBeforeAuthClass = ref('formBeforeAuth')
+});
+
+const formClass = ref("form");
+const formBeforeAuthClass = ref("formBeforeAuth");
 const formData = reactive({
   email: "",
   password: "",
@@ -30,20 +31,19 @@ const rules = computed(() => {
     password: {
       required: helpers.withMessage("Password is required", required),
       minLength: minLength(6),
-    },
+    }
   };
 });
 const v$ = useVuelidate(rules, formData);
 const handleSubmit = async () => {
-    const result = await v$.value.$validate()
-    if(result){
-        authStore.login(formData.email, formData.password)
-        authStore.setRoles(role.value)
-    }
-    setTimeout(() => {
-        formData.email = "",
-        formData.password  = ""
-    }, 1000)
+  const result = await v$.value.$validate();
+  if (result) {
+    authStore.login(formData.email, formData.password);
+    authStore.setRoles(role.value);
+  }
+  setTimeout(() => {
+    (formData.email = ""), (formData.password = "")
+  }, 1000);
 };
 </script>
 
@@ -73,12 +73,36 @@ const handleSubmit = async () => {
         {{ v$.password.$errors[0].$message }}
       </p>
       <br />
+      <div class="radioBtns">
+        <input
+          type="radio"
+          name="role"
+          value="Freelancer"
+          id="freelancer"
+          v-model="role"
+          required
+        />
+        <label id="labelRadio1" for="freelancer">Freelancer</label>
 
-      <input type="radio" name="role" value="Freelancer" id="freelancer" v-model="role" required>
-      <label id="labelRadio1" for="freelancer">Freelancer</label>
-
-      <input type="radio" name="role" value="Client" id="client" v-model="role">
-      <label id="labelRadio2" for="client">Client</label>
+        <input
+          type="radio"
+          name="role"
+          value="Client"
+          id="client"
+          v-model="role"
+        />
+        <label id="labelRadio2" for="client">Client</label>
+      </div>
+  <!--
+      <label id="categoriesLabel" for="categories">Select a category:</label>
+      <select name="categories" id="categories" v-model="formData.category" required>
+        <option disabled value="">Please select one</option>
+        <option value="wood-work">Wood work</option>
+        <option value="metal-work">Metal work</option>
+        <option value="art">Art</option>
+        <option value="interior-design">Interior design</option>
+        <option value="painting">Painting</option>
+      </select> -->
 
       <p class="forgot">Forgot password?</p>
 
@@ -91,7 +115,6 @@ const handleSubmit = async () => {
   </div>
 </template>
 
-
 <style scoped>
 .form {
   display: grid;
@@ -99,7 +122,7 @@ const handleSubmit = async () => {
   min-height: 100vh;
   padding-top: 8rem;
 }
-.formBeforeAuth{
+.formBeforeAuth {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   min-height: 100vh;
@@ -143,14 +166,38 @@ label {
   display: block;
   font-size: 16px;
 }
-#labelRadio1, #labelRadio2{
+/* select {
+  background: crimson;
+  color: white;
+  padding: 5px;
+  border-radius: 4px;
+  border: none;
+  outline: none;
+  width: 100%;
+}
+#categoriesLabel{
+  margin-top:1rem;
+}
+#categories{
+  margin-bottom:1rem;
+}*/
+.radioBtns {
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 1rem;
+} 
+#labelRadio1,
+#labelRadio2 {
   display: inline;
   cursor: pointer;
 }
-#labelRadio1{
+#labelRadio1 {
   margin-right: 12px;
 }
-#freelancer, #client{
+#freelancer,
+#client {
   accent-color: crimson;
   cursor: pointer;
 }
@@ -189,7 +236,7 @@ button[type="submit"] {
   cursor: pointer;
   margin: 0;
   margin-bottom: 6px;
-  font-weight:600;
+  font-weight: 600;
 }
 button[type="submit"]:hover {
   background-color: rgb(236, 55, 91);
