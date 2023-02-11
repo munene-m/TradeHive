@@ -17,7 +17,12 @@ const authSchema = mongoose.Schema({
     password: {
         type: String,
         required: true,
-        unique: true
+        // unique: true
+    },
+    category: {
+        type: String,
+        required: true,
+        lowercase: true
     },
     // isClient:{
     //     type: Boolean,

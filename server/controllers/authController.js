@@ -5,9 +5,9 @@ const authModel = require("../models/Auth");
 
 //Register user
 const registerUser = asyncHandler(async (req, res) => {
-  const { firstname, lastname, email, password } = req.body;
+  const { firstname, lastname, email, password, category } = req.body;
 
-  if (!firstname || !lastname || !email || !password) {
+  if (!firstname || !lastname || !email || !password || !category) {
     res.status(400);
     throw new Error("Please enter all the required fields");
   }
@@ -25,6 +25,7 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     firstname,
     lastname,
+    category,
     password: hashedPassword,
   });
 
@@ -35,6 +36,7 @@ const registerUser = asyncHandler(async (req, res) => {
       firstname: user.firstname,
       lastname: user.lastname,
       email: user.email,
+      category: category,
       token: generateToken(user._id),
     });
   } else {
@@ -96,26 +98,26 @@ const forgotPassword = asyncHandler(async (req, res) => {
 });
 
 // update user details
-const updateUser = asyncHandler(async (req, res) => {
-  const { user_id } = req.params;
-  const { firstname, lastname, email, profilePic } = req.body;
-  try {
-    const userExists = await User.findById({ _id: user_id });
-    const updatedUser = await User.findOneAndUpdate(
-      {
-        _id: userExists._id,
-      },
-      {
-        $set: { firstname, lastname, email, profilePic },
-      },
-      { new: true }
-    );
-    return res
-      .status(200)
-      .json({ message: "User details successfully updated", updatedUser });
-  } catch (error) {
-    res.status(500).json(error);
+const updateUser = asyncHandler( async( req, res ) => {
+  const user = await authModel.findById(req.params.id);
+
+  if(!user) {
+      res.status(404);
+      throw new Error("User not found");
   }
+
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(req.body.password, salt);
+
+  const updatedUser = await authModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  res.status(200).json({
+    _id: updatedUser.id,
+    firstname: updatedUser.firstname,
+    lastname: updatedUser.lastname,
+    password: hashedPassword,
+    category: updatedUser.category,
+    profilePic: updatedUser.profilePic
+  });
 });
 
 const getCredentials = asyncHandler(async (req, res) => {
