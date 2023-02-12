@@ -33,7 +33,7 @@ const ServiceSchema = mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-        lowercase: true
+        // lowercase: true
     },
     createdAt: {
         type: Date,
