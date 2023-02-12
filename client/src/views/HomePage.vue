@@ -1,57 +1,29 @@
 <script setup>
 import { onMounted, ref, watchEffect, reactive } from "vue";
 import { useAuthStore } from "../stores/auth";
-import { useServiceStore } from "../stores/services";
-import SearchIcon from "../assets/icons/SearchIcon.vue";
-import axios from "axios";
 const authStore = useAuthStore();
-const serviceStore = useServiceStore();
 const getUser = authStore.getUser();
 const jobsInCategory = authStore.jobsInCategory();
-const searchInput = ref("");
-const services = ref([]);
-const usersJobs = ref([]);
 
-// const jobsInCategory = async () => {
-// await axios.request(`http://localhost:3000/services/service/${authStore.userCategory}`)
-// .then(function (response) {
-// services.value = response.data;
-// }).catch((err) => console.log(err));
-// }
 onMounted(() => {
-  getUser,
-  jobsInCategory
+  getUser
 });
-
-// const response  = async function () {
-//   const res= await axios.request(`http://localhost:3000/services/service/${searchInput.value}`)
-//   .then(function (response){
-//     services.value = response.data
-//   }).catch((err)=>console.log(err))
-// }
-// watchEffect(() => {
-//     if(authStore.roles === 'Client'){
-//         clientRole.value === authStore.roles
-//     } else {
-//         freelancerRole.value === authStore.roles
-//     }
-// })
+watchEffect(() => {
+  if(authStore.userCategory !== null){
+    jobsInCategory
+  }
+})
 </script>
 
 <template>
   <div class="header">
-    <h1>Welcome, {{ authStore.userDetails }}</h1>
+    <h1>Welcome, {{ authStore.username }}</h1>
     <img src="../assets/images/Group 2.png" alt="" />
   </div>
   <div class="jobs" v-if="authStore.freelancerRole">
-    <!-- <div class="searchBar">
-      <SearchIcon class="icon"/>
-      <input type="text" v-model="searchInput" placeholder="Search for jobs here..." />
-      <button @click="response">Search</button>
-    </div> -->
     <div class="recommendations">
       <h2>Recommended jobs for you</h2>
-      <div v-if="serviceStore.services !== null">
+      <div v-if="authStore.services !== null">
         <div id="service" v-for="service in authStore.services" :key="service._id">
           <h2>Job title - {{ service.name }}</h2>
           <p>Job description - {{ service.description }}</p>
@@ -60,7 +32,7 @@ onMounted(() => {
         </div>
       </div>
       <div v-else>
-        <p>There are no services in your category</p>
+        <p>There are no jobs in your category</p>
       </div>
     </div>
   </div>
