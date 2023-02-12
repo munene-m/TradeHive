@@ -6,9 +6,9 @@ export const useAuthStore = defineStore({
   id: "auth",
   state: () => ({
     user: JSON.parse(localStorage.getItem("token")),
-    userDetails: "",
-    userCategory: "",
-    services: "",
+    username: "",
+    userCategory: JSON.parse(localStorage.getItem("category")),
+    services: JSON.parse(localStorage.getItem("Services")),
     clientRole: JSON.parse(localStorage.getItem("clientRole")),
     freelancerRole: JSON.parse(localStorage.getItem("freelancerRole")),
   }),
@@ -38,6 +38,8 @@ export const useAuthStore = defineStore({
       localStorage.removeItem("token");
       localStorage.removeItem("clientRole");
       localStorage.removeItem("freelancerRole")
+      localStorage.removeItem("Services")
+      localStorage.removeItem("category")
     },
     async getUser() {
       await fetch("http://localhost:3000/auth/credentials", {
@@ -48,8 +50,10 @@ export const useAuthStore = defineStore({
       })
         .then(response => response.json())
         .then(response => {
-          this.userDetails = response.firstname
+          this.username = response.firstname
           this.userCategory = response.category
+          localStorage.setItem("category",JSON.stringify(this.userCategory))
+          console.log(this.userCategory)
           })
         .catch((err) => console.log(err));
     },
@@ -66,15 +70,13 @@ export const useAuthStore = defineStore({
       console.log(this.freelancerRole)
     },
     async jobsInCategory() {
-      await fetch(`http://localhost:3000/services/service/${this.userCategory}`, {
-        method: "GET"
-      })
-      .then(response => response.json())
-      .then(response => {
-        this.services = response.data
-        console.log(this.services)
-        })
-      .catch((err) => console.log(err));
+      console.log("this.usercategory >> ",this.userCategory)
+
+      const url = `http://localhost:3000/services/service/${this.userCategory}`;
+      const res = await axios.get(url)
+      console.log(res.data)
+      this.services = res.data
+      localStorage.setItem("Services", JSON.stringify(this.services))
     }
   },
 });
