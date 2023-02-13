@@ -13,7 +13,7 @@ const role = ref("")
 
 watchEffect(() => {
   if(authStore.user){
-    router.push("/home-page")
+    router.push("/account-settings")
   }
 })
 
@@ -23,8 +23,7 @@ const formData = reactive({
     email: "",
     password: "",
     confirmPassword: "",
-    role: "",
-    category: ""
+    role: ""
 })
 const rules = computed(() => {
     return{
@@ -33,14 +32,14 @@ const rules = computed(() => {
         email: { required: helpers.withMessage("Email is required", required), email },
         password: { required: helpers.withMessage("Password is required", required), minLength:minLength(6)},
         confirmPassword: { required: helpers.withMessage("The entered passwords do not match", required), sameAs: sameAs(formData.password) },
-        category: { required: helpers.withMessage("Category is required", required) }
+        role: { required: helpers.withMessage("Category is required", required) }
     }
 })
 const v$ = useVuelidate(rules, formData)
 const handleSubmit = async () =>{
     const result = await v$.value.$validate()
     if(result){
-        authStore.register(formData.firstname, formData.lastname, formData.email, formData.password, formData.category)
+        authStore.register(formData.firstname, formData.lastname, formData.email, formData.password, formData.category, formData.role)
         authStore.setRoles(role.value)
         //router.push("/home-page")
     }
@@ -49,6 +48,7 @@ const handleSubmit = async () =>{
         formData.lastname = "",
         formData.email = "",
         formData.password  = "",
+        formData.role = ""
         formData.confirmPassword = ""
     }, 1000)
 }
@@ -106,35 +106,12 @@ const handleSubmit = async () =>{
       <br />
 
       <div class="radioBtns">
-        <input
-          type="radio"
-          name="role"
-          value="Freelancer"
-          id="freelancer"
-          v-model="role"
-          required
-        />
+        <input type="radio" name="role" value="Freelancer" id="freelancer" v-model="formData.role" required />
         <label id="labelRadio1" for="freelancer">Freelancer</label>
 
-        <input
-          type="radio"
-          name="role"
-          value="Client"
-          id="client"
-          v-model="role"
-        />
+        <input type="radio" name="role" value="Client" id="client" v-model="formData.role"/>
         <label id="labelRadio2" for="client">Client</label>
       </div>
-
-      <label id="categoriesLabel" for="categories">Select a category:</label>
-      <select name="categories" id="categories" v-model="formData.category" required>
-        <option disabled value="">Please select one</option>
-        <option value="wood work">Wood work</option>
-        <option value="metal work">Metal work</option>
-        <option value="art">Art</option>
-        <option value="interior-design">Interior design</option>
-        <option value="painting">Painting</option>
-      </select>
 
       <button id="signupBtn" type="submit">Create account</button>
       <p class="login">
@@ -196,21 +173,7 @@ label {
   display: block;
   font-size: 16px;
 }
-select {
-  background: crimson;
-  color: white;
-  padding: 5px;
-  border-radius: 4px;
-  border: none;
-  outline: none;
-  width: 100%;
-}
-#categoriesLabel{
-  margin-top:1rem;
-}
-#categories{
-  margin-bottom:1rem;
-}
+
 .radioBtns {
   padding: 10px;
   border: 2px solid #ccc;
