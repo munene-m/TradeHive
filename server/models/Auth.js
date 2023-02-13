@@ -21,17 +21,21 @@ const authSchema = mongoose.Schema({
     },
     category: {
         type: String,
-        required: true,
         lowercase: true
     },
-    // isClient:{
-    //     type: Boolean,
-    //     default: false
-    // },
-    // isFreelancer:{
-    //     type: Boolean,
-    //     default: false
-    // },
+    location:{
+        type: String
+    },
+    role: {
+        type: String,
+        required: true
+    },
+    rates: {
+        type: String,
+    },
+    workingHours: {
+        type: String
+    },
     profilePic: {
         type: String,
         default: ""
