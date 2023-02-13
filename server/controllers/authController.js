@@ -5,9 +5,9 @@ const authModel = require("../models/Auth");
 
 //Register user
 const registerUser = asyncHandler(async (req, res) => {
-  const { firstname, lastname, email, password, category } = req.body;
+  const { firstname, lastname, email, password,  role } = req.body;
 
-  if (!firstname || !lastname || !email || !password || !category) {
+  if (!firstname || !lastname || !email || !password || !role)  {
     res.status(400);
     throw new Error("Please enter all the required fields");
   }
@@ -25,7 +25,7 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     firstname,
     lastname,
-    category,
+    role,
     password: hashedPassword,
   });
 
@@ -36,7 +36,9 @@ const registerUser = asyncHandler(async (req, res) => {
       firstname: user.firstname,
       lastname: user.lastname,
       email: user.email,
-      category: category,
+      category: user.category,
+      location: user.location,
+      role: user.role,
       token: generateToken(user._id),
     });
   } else {
@@ -106,23 +108,33 @@ const updateUser = asyncHandler( async( req, res ) => {
       throw new Error("User not found");
   }
 
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(req.body.password, salt);
-
   const updatedUser = await authModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
-  res.status(200).json({
-    _id: updatedUser.id,
-    firstname: updatedUser.firstname,
-    lastname: updatedUser.lastname,
-    password: hashedPassword,
-    category: updatedUser.category,
-    profilePic: updatedUser.profilePic
-  });
+  res.status(200).json(updatedUser);
 });
 
 const getCredentials = asyncHandler(async (req, res) => {
   res.status(200).json(req.user);
 });
+
+const getUsers = asyncHandler(async (req, res) => {
+  const users = await authModel.find({category: req.params.value})
+  if(!users) {
+    res.status(400)
+    throw new Error("There are no users in that category")
+} else {
+    res.status(201).json(users)
+}
+})
+
+const getFreelanceUsers = asyncHandler(async(req, res) => {
+  const users = await authModel.find({role: 'Freelancer'})
+  if(!users) {
+    res.status(400)
+    throw new Error("There are no users in that category")
+} else {
+    res.status(201).json(users)
+}
+})
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -136,4 +148,6 @@ module.exports = {
   forgotPassword,
   updateUser,
   getCredentials,
+  getUsers,
+  getFreelanceUsers
 };
