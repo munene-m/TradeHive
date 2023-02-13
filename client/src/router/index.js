@@ -66,6 +66,14 @@ const router = createRouter({
       meta: {
         auth: true
       }
+    },
+    {
+      path: "/account-settings",
+      name: "account-settings",
+      component: () => import("../views/AccountSettings.vue"),
+      meta: {
+        auth: true
+      }
     }
   ],
 });
