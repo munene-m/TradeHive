@@ -19,8 +19,7 @@ const formClass = ref("form");
 const formBeforeAuthClass = ref("formBeforeAuth");
 const formData = reactive({
   email: "",
-  password: "",
-  role: ""
+  password: ""
 });
 const rules = computed(() => {
   return {
@@ -39,7 +38,6 @@ const handleSubmit = async () => {
   const result = await v$.value.$validate();
   if (result) {
     authStore.login(formData.email, formData.password);
-    authStore.setRoles(role.value);
   }
   setTimeout(() => {
     (formData.email = ""), (formData.password = "")
@@ -73,36 +71,6 @@ const handleSubmit = async () => {
         {{ v$.password.$errors[0].$message }}
       </p>
       <br />
-      <div class="radioBtns">
-        <input
-          type="radio"
-          name="role"
-          value="Freelancer"
-          id="freelancer"
-          v-model="role"
-          required
-        />
-        <label id="labelRadio1" for="freelancer">Freelancer</label>
-
-        <input
-          type="radio"
-          name="role"
-          value="Client"
-          id="client"
-          v-model="role"
-        />
-        <label id="labelRadio2" for="client">Client</label>
-      </div>
-  <!--
-      <label id="categoriesLabel" for="categories">Select a category:</label>
-      <select name="categories" id="categories" v-model="formData.category" required>
-        <option disabled value="">Please select one</option>
-        <option value="wood-work">Wood work</option>
-        <option value="metal-work">Metal work</option>
-        <option value="art">Art</option>
-        <option value="interior-design">Interior design</option>
-        <option value="painting">Painting</option>
-      </select> -->
 
       <p class="forgot">Forgot password?</p>
 
@@ -165,41 +133,6 @@ form > h3 {
 label {
   display: block;
   font-size: 16px;
-}
-/* select {
-  background: crimson;
-  color: white;
-  padding: 5px;
-  border-radius: 4px;
-  border: none;
-  outline: none;
-  width: 100%;
-}
-#categoriesLabel{
-  margin-top:1rem;
-}
-#categories{
-  margin-bottom:1rem;
-}*/
-.radioBtns {
-  padding: 10px;
-  border: 2px solid #ccc;
-  border-radius: 1px solid #ccc;
-  border-radius: 8px;
-  margin-top: 1rem;
-} 
-#labelRadio1,
-#labelRadio2 {
-  display: inline;
-  cursor: pointer;
-}
-#labelRadio1 {
-  margin-right: 12px;
-}
-#freelancer,
-#client {
-  accent-color: crimson;
-  cursor: pointer;
 }
 input[type="password"],
 input[type="email"] {
