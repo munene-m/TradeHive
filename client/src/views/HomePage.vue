@@ -4,9 +4,10 @@ import { useAuthStore } from "../stores/auth";
 const authStore = useAuthStore();
 const getUser = authStore.getUser();
 const jobsInCategory = authStore.jobsInCategory();
-
+const getFreelancers = authStore.getFreelancers()
 onMounted(() => {
   getUser
+  getFreelancers
 });
 watchEffect(() => {
   if(authStore.userCategory !== null){
@@ -31,8 +32,12 @@ watchEffect(() => {
           <p>Payment - {{ service.price }} {{ service.currency }}</p>
         </div>
       </div>
-      <div v-else>
-        <p>There are no jobs in your category</p>
+      <div id="freelancerPage" v-else-if="authStore.clientRole">
+        <div v-if="authStore.freelancers !== null">
+          <div v-for="freelancer in authStore.freelancers" :key="freelancer._id">
+            <h2>Name: {{ freelancer.firstname }}</h2>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -96,5 +101,9 @@ watchEffect(() => {
   width: 65%;
   padding: 10px 20px;
   margin-bottom: 10px;
+}
+#freelancerPage{
+  position: relative;
+  top:10rem;
 }
 </style>
