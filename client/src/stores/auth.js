@@ -1,6 +1,7 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
 import { registerUrl, loginUrl } from "../utils/authUrls";
 import axios from "axios";
+// import { getFreelanceUsers } from "../../../server/controllers/authController";
 
 export const useAuthStore = defineStore({
   id: "auth",
@@ -11,18 +12,20 @@ export const useAuthStore = defineStore({
     services: JSON.parse(localStorage.getItem("Services")),
     clientRole: JSON.parse(localStorage.getItem("clientRole")),
     freelancerRole: JSON.parse(localStorage.getItem("freelancerRole")),
+    freelancers: []
   }),
 
   getters: {},
 
   actions: {
-    async register(firstname, lastname, email, password, category) {
+    async register(firstname, lastname, email, password, category, role) {
       const response = await axios.post(registerUrl, {
         firstname,
         lastname,
         email,
         password,
-        category
+        category, 
+        role
       });
       this.user = response.data.token;
       localStorage.setItem("token", JSON.stringify(response.data.token));
@@ -77,6 +80,12 @@ export const useAuthStore = defineStore({
       console.log(res.data)
       this.services = res.data
       localStorage.setItem("Services", JSON.stringify(this.services))
+    },
+    async getFreelancers(){
+      const res = await axios.get('http://localhost:3000/auth/freelancers')
+      this.freelancers = res.data
+      console.log(res.data)
+
     }
   },
 });
