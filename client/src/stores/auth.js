@@ -7,8 +7,11 @@ export const useAuthStore = defineStore({
   id: "auth",
   state: () => ({
     user: JSON.parse(localStorage.getItem("token")),
-    username: "",
-    userCategory: JSON.parse(localStorage.getItem("category")),
+    firstname: "",
+    lastname: "",
+    email: "",
+    role: "",
+    // userCategory: JSON.parse(localStorage.getItem("category")),
     services: JSON.parse(localStorage.getItem("Services")),
     clientRole: JSON.parse(localStorage.getItem("clientRole")),
     freelancerRole: JSON.parse(localStorage.getItem("freelancerRole")),
@@ -53,7 +56,10 @@ export const useAuthStore = defineStore({
       })
         .then(response => response.json())
         .then(response => {
-          this.username = response.firstname
+          this.firstname = response.firstname
+          this.lastname = response.lastname
+          this.email = response.email
+          this.role = response.role
           this.userCategory = response.category
           localStorage.setItem("category",JSON.stringify(this.userCategory))
           console.log(this.userCategory)
