@@ -11,7 +11,7 @@ const role = ref("");
 
 watchEffect(() => {
   if (authStore.user !== null) {
-    router.push("/home-page");
+    router.push("/account-settings");
   }
 });
 
