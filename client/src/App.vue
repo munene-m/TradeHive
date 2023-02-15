@@ -2,6 +2,7 @@
 import { RouterLink, RouterView, useRouter } from "vue-router";
 import { useAuthStore } from "./stores/auth";
 import LogOutIcon from "./assets/icons/LogOut.vue"
+import SettingsIcon from "./assets/icons/SettingsIcon.vue";
 const authStore = useAuthStore();
 const router = useRouter();
 
@@ -24,6 +25,7 @@ const handleLogout = () => {
         </div>
         <div v-else>
           <a @click="handleLogout" class="logOutBtn">Log out <LogOutIcon /></a>
+          <RouterLink to="/account-settings"><SettingsIcon/></RouterLink>
         </div>
       </nav>
       <div v-if="authStore.user" class="categories">
