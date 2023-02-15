@@ -3,6 +3,7 @@ import { registerUrl, loginUrl } from "../utils/authUrls";
 import axios from "axios";
 // import { getFreelanceUsers } from "../../../server/controllers/authController";
 
+
 export const useAuthStore = defineStore({
   id: "auth",
   state: () => ({
@@ -10,12 +11,15 @@ export const useAuthStore = defineStore({
     firstname: "",
     lastname: "",
     email: "",
+    category: "",
     role: "",
+    userId: "",
     // userCategory: JSON.parse(localStorage.getItem("category")),
     services: JSON.parse(localStorage.getItem("Services")),
     clientRole: JSON.parse(localStorage.getItem("clientRole")),
     freelancerRole: JSON.parse(localStorage.getItem("freelancerRole")),
-    freelancers: []
+    freelancers: [],
+    userDetails: JSON.parse(localStorage.getItem("userDetails")),
   }),
 
   getters: {},
@@ -46,6 +50,7 @@ export const useAuthStore = defineStore({
       localStorage.removeItem("freelancerRole")
       localStorage.removeItem("Services")
       localStorage.removeItem("category")
+      localStorage.removeItem("userDetails")
     },
     async getUser() {
       await fetch("http://localhost:3000/auth/credentials", {
@@ -60,9 +65,13 @@ export const useAuthStore = defineStore({
           this.lastname = response.lastname
           this.email = response.email
           this.role = response.role
-          this.userCategory = response.category
-          localStorage.setItem("category",JSON.stringify(this.userCategory))
-          console.log(this.userCategory)
+          console.log(this.role)
+          this.userId = response._id
+          this.category = response.category
+          console.log(this.category)
+          // this.userCategory = response.category
+          // localStorage.setItem("category",JSON.stringify(this.userCategory))
+          // console.log(this.userCategory)
           })
         .catch((err) => console.log(err));
     },
@@ -91,7 +100,26 @@ export const useAuthStore = defineStore({
       const res = await axios.get('http://localhost:3000/auth/freelancers')
       this.freelancers = res.data
       console.log(res.data)
-
+    },
+    async updateClient(category, contact) {
+      await axios.put(`http://localhost:3000/auth/update/${this.userId}`, {
+       category, contact
+      }).then(response => {
+        console.log(response.data)
+      localStorage.setItem("userDetails", JSON.stringify(response.data.category))
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    async updateFreelancer(location, workingHours, rates, category, contact){
+      await axios.put(`http://localhost:3000/auth/update/${this.userId}`, {
+        location, workingHours, rates, category, contact
+      }).then(response => {
+        console.log(response.data)
+      localStorage.setItem("userDetails", JSON.stringify(response.data.category))
+      }).catch(err => {
+        console.log(err)
+      })
     }
   },
 });
