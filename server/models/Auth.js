@@ -20,7 +20,7 @@ const authSchema = mongoose.Schema({
         // unique: true
     },
     category: {
-        type: String,
+        type: Array,
         lowercase: true
     },
     location:{
@@ -39,6 +39,9 @@ const authSchema = mongoose.Schema({
     profilePic: {
         type: String,
         default: ""
+    },
+    contact: {
+        type: Number
     }
 
 }, {timeStamps: true})
