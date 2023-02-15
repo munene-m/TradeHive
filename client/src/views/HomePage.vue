@@ -18,7 +18,7 @@ watchEffect(() => {
 
 <template>
   <div class="header">
-    <h1>Welcome, {{ authStore.username }}</h1>
+    <h1>Welcome, {{ authStore.firstname }}</h1>
     <img src="../assets/images/Group 2.png" alt="" />
   </div>
   <div class="jobs" v-if="authStore.freelancerRole">
