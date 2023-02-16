@@ -173,6 +173,7 @@ onMounted(() => {
         id="phone"
         name="phone"
         placeholder="e.g 0712345678"
+        autocomplete="off"
       />
       <button type="submit">Update</button>
     </form>
@@ -266,6 +267,7 @@ onMounted(() => {
             placeholder="e.g Ruiru, Kiambu"
             id="location"
             name="location"
+            autocomplete="off"
           />
       <!-- <p class="errorMsg" v-if="v$.location.$error">{{ v$.location.$errors[0].$message }}</p> -->
           <label for="workingHrs">Working Hours</label><br />
@@ -275,6 +277,7 @@ onMounted(() => {
             placeholder="e.g 8am - 5pm"
             id="workingHrs"
             name="workingHrs"
+            autocomplete="off"
           />
       <!-- <p class="errorMsg" v-if="v$.workingHours.$error">{{ v$.workingHours.$errors[0].$message }}</p> -->
           <label for="rates">Rates</label><br />
@@ -284,6 +287,7 @@ onMounted(() => {
             placeholder="e.g Ksh 400/hr"
             id="rates"
             name="rates"
+            autocomplete="off"
           />
       <!-- <p class="errorMsg" v-if="v$.rates.$error">{{ v$.rates.$errors[0].$message }}</p> -->
       <label for="phone">Contact information</label><br />
@@ -293,6 +297,7 @@ onMounted(() => {
         id="phone"
         name="phone"
         placeholder="e.g 0712345678"
+        autocomplete="off"
       />
       <!-- <p class="errorMsg" v-if="v$.contact.$error">{{ v$.contact.$errors[0].$message }}</p> -->
 
