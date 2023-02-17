@@ -120,6 +120,15 @@ export const useAuthStore = defineStore({
       }).catch(err => {
         console.log(err)
       })
+    },
+    async getServices(){
+      let queryParams = this.userDetails.map(value => `param=${encodeURI(value)}`).join('&')
+      console.log(queryParams)
+
+      await axios.get(`http://localhost:3000/services/service/${queryParams}`)
+      .then(response => {
+        console.log(response.data);
+      }).catch(error => console.error(error))
     }
   },
 });
