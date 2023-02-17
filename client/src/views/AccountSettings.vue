@@ -11,7 +11,9 @@ const getUser = authStore.getUser();
 const showPopUp = ref(false)
 // const checkedCategories = ref([]);
 
-
+onMounted(() => {
+    authStore.getServices()
+})
 
 const formData = reactive({
     // location: "",
@@ -61,7 +63,6 @@ const handleFreelancerUpdate = async () => {
     if(result){
         authStore.updateFreelancer(freelanceFormData.location, freelanceFormData.workingHours, freelanceFormData.rates, freelanceFormData.checkedCategories, freelanceFormData.contact)
         showPopUp.value = true
-        console.log(showPopUp.value)
     }
     setTimeout(() => {
         freelanceFormData.location =  "",
