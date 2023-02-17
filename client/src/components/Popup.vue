@@ -11,10 +11,11 @@ const show = ref(true)
 defineProps({
     message: String
 })
+//This hook makes this appear only once when user updates the page. After other updates the popup doesn't show
 onMounted(() => {
     setTimeout(() => {
         show.value = false
-    }, 3000)
+    }, 5000)
 })
 </script>
 
@@ -24,9 +25,11 @@ onMounted(() => {
     top: 10rem;
     left: 50%;
     transform: translateX(-50%);
-    padding: 10px;
+    padding: 8px;
     background-color: #4CAF50;
+    border-radius: 6px;
     color: #fff;
     z-index: 10000;
+    opacity: 0.7;
 }
 </style>
