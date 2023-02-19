@@ -3,22 +3,13 @@ import { onMounted, ref, watchEffect, reactive, computed } from "vue";
 import { useAuthStore } from "../stores/auth";
 import { useVuelidate } from '@vuelidate/core'
 import { required, minLength, helpers } from '@vuelidate/validators'
-import { useRouter } from 'vue-router'
 import Popup from "../components/Popup.vue";
-const router = useRouter()
 const authStore = useAuthStore();
 const getUser = authStore.getUser();
 const showPopUp = ref(false)
-// const checkedCategories = ref([]);
 
-onMounted(() => {
-    authStore.getServices()
-})
 
 const formData = reactive({
-    // location: "",
-    // workingHours: "",
-    // rates: "",
     contact: "",
     checkedCategories: []
 })
@@ -35,9 +26,6 @@ const handleClientUpdate = async () =>{
         
     }
     setTimeout(() => {
-        // formData.location =  "",
-        // formData.rates = "",
-        // formData.location = "",
         formData.contact = ""
     }, 1000)
 }
@@ -76,6 +64,7 @@ const handleFreelancerUpdate = async () => {
 
 onMounted(() => {
   getUser;
+
 });
 </script>
 
