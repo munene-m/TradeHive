@@ -1,10 +1,12 @@
 <script setup>
 import { onMounted, ref, watchEffect, reactive } from "vue";
 import { useAuthStore } from "../stores/auth";
+import axios from 'axios'
 const authStore = useAuthStore();
 const getUser = authStore.getUser();
 const jobsInCategory = authStore.jobsInCategory();
 const getFreelancers = authStore.getFreelancers()
+
 onMounted(() => {
   getUser
   getFreelancers
@@ -13,7 +15,33 @@ watchEffect(() => {
   if(authStore.userCategory !== null){
     jobsInCategory
   }
+  function filterCategories(category){
+    return authStore.category.filter(item => item === category)
+}
+
+ async function getCategoryData(category){
+    await axios.get(`http://localhost:3000/services/service/${category}`)
+    .then(response => {
+      // Handle the response data
+      console.log(response.data);
+    })
+    .catch(error => {
+      // Handle the error
+      console.log(error);
+    });
+}
+
+authStore.category.forEach(category => {
+  // Filter the array to create a new array with only the current category
+  const filteredCategories = filterCategories(category);
+
+  // Call the getCategoryData function with the first item in the filtered array
+  if (filteredCategories.length > 0) {
+    getCategoryData(filteredCategories[0]);
+  }
+});
 })
+
 </script>
 
 <template>
