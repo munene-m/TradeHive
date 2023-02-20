@@ -68,13 +68,25 @@ const router = createRouter({
       }
     },
     {
+      path: "/home-page/:jobId",
+      name: 'Job',
+      component: () => import("../components/Job.vue"),
+      props: true
+    },
+    {
       path: "/account-settings",
       name: "account-settings",
       component: () => import("../views/AccountSettings.vue"),
       meta: {
         auth: true
       }
-    }
+    },
+    {
+      /* Wildcard path to catch other paths */
+      path: '/:pathMatch(.*)*',
+      name: 'notfound',
+      component: () => import('../views/NotFound.vue')
+  }
   ],
 });
 
