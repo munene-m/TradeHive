@@ -96,11 +96,6 @@ export const useAuthStore = defineStore({
       this.services = res.data
       localStorage.setItem("Services", JSON.stringify(this.services))
     },
-    async getFreelancers(){
-      const res = await axios.get('http://localhost:3000/auth/freelancers')
-      this.freelancers = res.data
-      console.log(res.data)
-    },
     async updateClient(category, contact) {
       await axios.put(`http://localhost:3000/auth/update/${this.userId}`, {
        category, contact
