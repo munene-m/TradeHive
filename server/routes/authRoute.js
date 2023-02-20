@@ -8,5 +8,5 @@ router.route("/login").post(loginUser)
 router.route("/update/:id").put(updateUser)
 router.route("/forgot-password").put(forgotPassword)
 router.route('/users/:value').get(getUsers)
-router.route("/freelancers").get(getFreelanceUsers)
+router.route("/freelancers/:value").get(getFreelanceUsers)
 module.exports = router
