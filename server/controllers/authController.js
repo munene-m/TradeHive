@@ -87,7 +87,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
 
     const updatedUser = authModel.findOneAndUpdate(
       { email },
-      { $set: { password: hashedPassword } },
+      {password: hashedPassword  },
       { new: true }
     );
     res.status(200).json({
@@ -127,12 +127,17 @@ const getUsers = asyncHandler(async (req, res) => {
 })
 
 const getFreelanceUsers = asyncHandler(async(req, res) => {
-  const users = await authModel.find({role: 'Freelancer'})
+  const users = await authModel.find({
+    $and:[
+      {role: 'Freelancer'},
+      { category: req.params.value}
+    ]
+  })
   if(!users) {
     res.status(400)
     throw new Error("There are no users in that category")
 } else {
-    res.status(201).json(users)
+    res.status(200).json(users)
 }
 })
 
