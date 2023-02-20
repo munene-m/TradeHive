@@ -66,8 +66,19 @@ const deleteService = asyncHandler( async( req, res ) => {
     res.status(200).json({ id: req.params.id })
 });
 
-//get single servive
 const getService = asyncHandler(async (req, res) => {
+    const service = await serviceModel.findById(req.params.id)
+    if(!service) {
+        res.status(400)
+        throw new Error("Service not found")
+    } else {
+        res.status(201).json(service)
+    }
+
+})
+
+//get single servive where category is in params
+const getServiceInCategory = asyncHandler(async (req, res) => {
     const service = await serviceModel.find({category: decodeURIComponent(req.params.value)})
     if(!service) {
         res.status(400)
@@ -94,5 +105,6 @@ module.exports = {
     updateService,
     deleteService,
     getService,
+    getServiceInCategory,
     getAllServices
 }
