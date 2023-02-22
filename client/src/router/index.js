@@ -74,6 +74,12 @@ const router = createRouter({
       props: true
     },
     {
+      path: "/home-page/freelancer/:freelancerId",
+      name: 'Freelancer',
+      component: () => import("../components/Freelancer.vue"),
+      props: true
+    },
+    {
       path: "/account-settings",
       name: "account-settings",
       component: () => import("../views/AccountSettings.vue"),
