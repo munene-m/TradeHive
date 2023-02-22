@@ -16,8 +16,6 @@ const handle404 = () => {
 </template>
 <style scoped>
 div {
-  position: relative;
-  top: 10rem;
   display: flex;
   align-items: center;
   justify-content: center;

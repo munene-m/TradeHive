@@ -1,5 +1,7 @@
 <script setup>
 import { useRouter } from "vue-router";
+import { useAuthStore } from "../stores/auth";
+const authStore = useAuthStore()
 const router = useRouter();
 const handleSubmit = () => {
   router.push("/register");
@@ -15,7 +17,7 @@ const handleSubmit = () => {
           Access Kenyan skilled individuals in various sectors at affordable
           rates.
         </p>
-        <button @click="handleSubmit">Get started</button>
+        <button v-if="!authStore.user" @click="handleSubmit">Get started</button>
       </div>
       <div class="community-img">
         <img src="../assets/images/Group 5.png" alt="" />
@@ -26,15 +28,17 @@ const handleSubmit = () => {
 
 <style scoped>
 main {
-  position: relative;
-  top: 10rem;
+  
+  
 }
 .container {
+  position: relative;
+  top: 10rem;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   align-items: center;
   justify-items: center;
-  margin: 0 6em;
+  /* margin: 0 6em; */
 }
 .hero-content {
   padding: 0 3em;
@@ -65,17 +69,17 @@ main {
 }
 
 @media only screen and (max-width: 768px) {
-  main{
+  /* main{
     top: 5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
+  } */
   .hero-content{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
   }
   .hero-content h1{
     font-size: 2.5rem;
