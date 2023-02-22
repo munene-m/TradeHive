@@ -333,13 +333,14 @@ settings h3 {
   align-items: center;
 }
 #freelancerDetails{
-    position: relative;
-  top: 8rem;
+
   display: flex;
   justify-content: center;
   align-items: center;
 }
 form {
+  position: relative;
+  top: 8rem;
   width: 330px;
   padding: 14px 28px;
   text-align: left;
