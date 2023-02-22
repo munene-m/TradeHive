@@ -1,7 +1,7 @@
 <script setup>
 import { RouterLink, RouterView, useRouter } from "vue-router";
 import { useAuthStore } from "./stores/auth";
-import LogOutIcon from "./assets/icons/LogOut.vue"
+import LogOutIcon from "./assets/icons/LogOut.vue";
 import SettingsIcon from "./assets/icons/SettingsIcon.vue";
 const authStore = useAuthStore();
 const router = useRouter();
@@ -13,36 +13,48 @@ const handleLogout = () => {
 </script>
 
 <template>
-  <header>
-    <div class="wrapper">
-      <nav>
-        <RouterLink class="heading" to="/">tradeHive</RouterLink>
-        <div v-if="authStore.user === null">
-          <RouterLink class="loginBtn" to="/login">Log in</RouterLink>
-          <RouterLink class="registerBtn" to="/register"
-            >Create account</RouterLink
-          >
+  <div class="main-layout">
+    <header>
+      <div class="wrapper">
+        <nav>
+          <RouterLink class="heading" to="/">tradeHive</RouterLink>
+          <div v-if="authStore.user === null">
+            <RouterLink class="loginBtn" to="/login">Log in</RouterLink>
+            <RouterLink class="registerBtn" to="/register"
+              >Create account</RouterLink
+            >
+          </div>
+          <div v-else>
+            <a @click="handleLogout" class="logOutBtn"
+              >Log out <LogOutIcon
+            /></a>
+            <RouterLink to="/account-settings"><SettingsIcon /></RouterLink>
+          </div>
+        </nav>
+        <div v-if="authStore.user" class="categories">
+          <RouterLink class="homePage" to="/home-page">Home</RouterLink>
+          <RouterLink to="/wood-work">Wood work</RouterLink>
+          <RouterLink to="/metal-work">Metal work</RouterLink>
+          <RouterLink to="/art">Art</RouterLink>
+          <RouterLink to="/interior-design">Interior design</RouterLink>
+          <RouterLink to="/painting">Painting</RouterLink>
         </div>
-        <div v-else>
-          <a @click="handleLogout" class="logOutBtn">Log out <LogOutIcon /></a>
-          <RouterLink to="/account-settings"><SettingsIcon/></RouterLink>
-        </div>
-      </nav>
-      <div v-if="authStore.user" class="categories">
-        <RouterLink class="homePage" to="/home-page">Home</RouterLink>
-        <RouterLink to="/wood-work">Wood work</RouterLink>
-        <RouterLink to="/metal-work">Metal work</RouterLink>
-        <RouterLink to="/art">Art</RouterLink>
-        <RouterLink to="/interior-design">Interior design</RouterLink>
-        <RouterLink to="/painting">Painting</RouterLink>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <RouterView />
+    <RouterView />
+    <footer>
+      <p>Copyright @2023</p>
+    </footer>
+  </div>
 </template>
 
 <style scoped>
+.main-layout {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
 .wrapper {
   position: relative;
   height: 20h;
@@ -114,9 +126,9 @@ nav > div {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  z-index:100;
+  z-index: 100;
 }
-.categories .homePage{
+.categories .homePage {
   color: crimson;
 }
 .categories a {
@@ -128,6 +140,20 @@ nav > div {
   text-decoration-line: underline;
   text-decoration-thickness: 2px;
   text-decoration-color: #f4605b;
+}
+footer {
+  padding: 1em;
+  background: #f4605b;
+  border-top: 1px solid crimson;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+footer > p{
+  margin: 0;
+    color: white;
+    text-align: center;
 }
 @media only screen and (max-width: 768px) {
   nav {
