@@ -183,7 +183,7 @@ button[type="submit"]:hover {
   text-decoration: none;
   font-weight: 600;
 }
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 40em) {
   .form {
     display: flex;
     justify-content: center;
