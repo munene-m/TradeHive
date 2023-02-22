@@ -24,11 +24,14 @@ const ServiceSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    // provider: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Auth', //referencing the auth model
-    //     required: true
-    // },
+    provider: {
+        type: String,
+        required: true
+    },
+    contactInfo: {
+        type: String,
+        required: true
+    },
     category: {
         type: String,
         required: true,
