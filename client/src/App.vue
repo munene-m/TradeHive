@@ -143,7 +143,7 @@ nav > div {
 }
 footer {
   padding: 1em;
-  background: #f4605b;
+  background: white;
   border-top: 1px solid crimson;
   position: fixed;
   bottom: 0;
@@ -152,8 +152,9 @@ footer {
 }
 footer > p{
   margin: 0;
-    color: white;
+    color: #f4605b;
     text-align: center;
+    font-weight:800;
 }
 @media only screen and (max-width: 768px) {
   nav {
