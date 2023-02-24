@@ -295,6 +295,7 @@ onMounted(() => {
     </form>
 <Popup v-if="showPopUp" message="Account details updated successfully!"/>
   </div>
+  
 </template>
 
 <style scoped>

@@ -27,10 +27,10 @@ const handleSubmit = () => {
 </template>
 
 <style scoped>
-main {
+/* main {
   
   
-}
+} */
 .container {
   position: relative;
   top: 10rem;
