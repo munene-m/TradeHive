@@ -4,6 +4,7 @@ const asyncHandler = require('express-async-handler')
 
 //create new service
 const createService = asyncHandler(async (req, res) => {
+    //Get these values from the request body of the client side
     const { name, description, price, duration, currency, category, provider, contactInfo } = req.body
     if(!name || !description || !price || !duration || !currency || !category || !provider || !contactInfo) {
         res.status(400)
@@ -69,6 +70,7 @@ const deleteService = asyncHandler( async( req, res ) => {
 });
 
 const getService = asyncHandler(async (req, res) => {
+    //Get a service with an id same as the one in the parameters
     const service = await serviceModel.findById(req.params.id)
     if(!service) {
         res.status(400)
@@ -79,14 +81,14 @@ const getService = asyncHandler(async (req, res) => {
 
 })
 
-//get single servive where category is in params
+//get servives where category is in params
 const getServiceInCategory = asyncHandler(async (req, res) => {
     const service = await serviceModel.find({category: decodeURIComponent(req.params.value)})
     if(!service) {
         res.status(400)
         throw new Error("Service not found")
     } else {
-        res.status(201).json(service)
+        res.status(200).json(service)
     }
 })
 
