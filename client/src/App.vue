@@ -43,9 +43,6 @@ const handleLogout = () => {
     </header>
 
     <RouterView />
-    <footer>
-      <p>Copyright @2023</p>
-    </footer>
   </div>
 </template>
 
@@ -140,21 +137,6 @@ nav > div {
   text-decoration-line: underline;
   text-decoration-thickness: 2px;
   text-decoration-color: #f4605b;
-}
-footer {
-  padding: 1em;
-  background: white;
-  border-top: 1px solid crimson;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-footer > p{
-  margin: 0;
-    color: #f4605b;
-    text-align: center;
-    font-weight:800;
 }
 @media only screen and (max-width: 768px) {
   nav {
