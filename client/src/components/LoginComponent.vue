@@ -143,6 +143,9 @@ input[type="email"] {
   outline: none;
   border-bottom: 2px solid #919191;
   line-height: 1.5em;
+  font-family: inherit;
+    font-weight: 800;
+    font-size: 14px;
 }
 .errorMsg {
   color: red;
