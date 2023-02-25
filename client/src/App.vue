@@ -2,9 +2,19 @@
 import { RouterLink, RouterView, useRouter } from "vue-router";
 import { useAuthStore } from "./stores/auth";
 import LogOutIcon from "./assets/icons/LogOut.vue";
-import SettingsIcon from "./assets/icons/SettingsIcon.vue";
+// import SettingsIcon from "./assets/icons/SettingsIcon.vue";
+import { createAvatar } from "@dicebear/core";
+import { loreleiNeutral } from "@dicebear/collection";
 const authStore = useAuthStore();
 const router = useRouter();
+
+const avatar = createAvatar(loreleiNeutral, {
+  seed: "John Doe",
+  size: 64,
+  radius: 50,
+  backgroundColor: ["c0aede", "b6e3f4"],
+  glasses: ["variant01"],
+}).toDataUriSync();
 
 const handleLogout = () => {
   authStore.logOut();
@@ -24,11 +34,9 @@ const handleLogout = () => {
               >Create account</RouterLink
             >
           </div>
-          <div v-else>
-            <a @click="handleLogout" class="logOutBtn"
-              >Log out <LogOutIcon
-            /></a>
-            <RouterLink to="/account-settings"><SettingsIcon /></RouterLink>
+          <div class="logoutProfile" v-else>
+            <a @click="handleLogout" class="logOutBtn">Log out <LogOutIcon/></a>
+            <RouterLink to="/account-settings"><img :src="avatar" alt="" :key="freelancer"/></RouterLink>
           </div>
         </nav>
         <div v-if="authStore.user" class="categories">
@@ -47,11 +55,11 @@ const handleLogout = () => {
 </template>
 
 <style scoped>
-.main-layout {
+/* .main-layout {
   min-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
-}
+} */
 .wrapper {
   position: relative;
   height: 20h;
@@ -84,9 +92,13 @@ nav > div {
 }
 .loginBtn {
   padding: 10px 20px;
-  border: 2px solid black;
+  border: 2px solid crimson;
   border-radius: 28px;
   font-weight: bold;
+  border: nonw;
+  /* border: none; */
+  outline: none;
+  color: black;
 }
 .registerBtn {
   padding: 10px 20px;
@@ -137,6 +149,13 @@ nav > div {
   text-decoration-line: underline;
   text-decoration-thickness: 2px;
   text-decoration-color: #f4605b;
+}
+.logoutProfile{
+  gap:20px;
+}
+img{
+  width: 2.8em;
+  margin-top:4px;
 }
 @media only screen and (max-width: 768px) {
   nav {
