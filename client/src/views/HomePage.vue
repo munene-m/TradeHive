@@ -4,15 +4,11 @@ import { useAuthStore } from "../stores/auth";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import Modal from "../components/Modal.vue";
-import { createAvatar } from "@dicebear/core";
-import { miniavs } from "@dicebear/collection";
-const avatar = createAvatar(miniavs, {
-  seed: Math.random("John Doe"),
-  size: 64,
-  radius: 50,
-  backgroundColor: ["c0aede", "b6e3f4"],
-  glasses: ["variant01"],
-}).toDataUriSync();
+import { useServiceStore } from "../stores/services";
+const serviceStore = useServiceStore()
+
+const headerClass=ref('header')
+const headerIfFreelancer = ref('headerIfFreelancer')
 const router = useRouter();
 const authStore = useAuthStore();
 const getUser = authStore.getUser();
@@ -86,18 +82,22 @@ authStore.category.forEach((category) => {
     getFreelancers(filteredCategories[0]);
   }
 });
+const handleModal = async() => {
+  const response = await serviceStore.createJobs()
+  console.log(response);
+}
 </script>
 
 <template>
-  <div class="header">
+  <div  :class="[authStore.role === 'Client' ? headerClass : '', headerIfFreelancer]">
     <div class="headerInfo">
       <h1>Welcome, {{ authStore.firstname }}</h1>
       <img src="../assets/images/Group 2.png" alt="" />
     </div>
-    <div class="createJob">
+    <div class="createJob" v-if="authStore.role === 'Client'">
       <p>Click here to create a job now:</p>
       <button @click="jobForm" class="postjobBtn">Post job</button>
-      <Modal :show="showModal" @close="showModal = false" />
+      <Modal :show="showModal" @close="showModal = false" @submit="handleModal" />
     </div>
   </div>
   <div class="jobs">
@@ -126,7 +126,7 @@ authStore.category.forEach((category) => {
           v-for="freelancer in freelancerRecommendations"
           :key="freelancer._id"
         >
-          <img :src="avatar" alt="" :key="freelancer" />
+          
           <h2>{{ freelancer.firstname }} {{ freelancer.lastname }}</h2>
           <p>Location: {{ freelancer.location }}</p>
           <p>Working hours - {{ freelancer.workingHours }}</p>
@@ -152,6 +152,17 @@ authStore.category.forEach((category) => {
     gap:15px;
     margin-right: 6rem;
     margin-left:6rem;
+}
+.headerIfFreelancer{
+  display: flex;
+    align-items: center;
+    justify-content: start;
+    gap:15px;
+    margin-right: 6rem;
+    margin-left:6rem
+}
+.headerIfFreelancer img{
+  width: 15%;
 }
 .headerInfo {
   position: relative;
