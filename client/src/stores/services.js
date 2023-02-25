@@ -1,8 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import axios from "axios";
-import { useAuthStore } from "./auth";
-const authStore = useAuthStore();
 
 export const useServiceStore = defineStore("services", () => {
   let user = JSON.parse(localStorage.getItem("token"));
@@ -10,8 +8,8 @@ export const useServiceStore = defineStore("services", () => {
   const services = ref([])
 
   const getServices = async () => {
-    await fetch("http://localhost:3000/services", {
-      method: "GET",
+    await fetch("http://localhost:3000/services/create", {
+      method: "POST",
       headers: {
         Authorization: `Bearer ${user}`,
       },
@@ -20,6 +18,18 @@ export const useServiceStore = defineStore("services", () => {
       .then((response) => (userServices.value = response.category))
       .catch((err) => console.log(err));
   };
+  const createJobs = async (name, description, price, currency, category, provider, contactInfo) => {
+    axios.post("http://localhost:3000/services/create",{
+      headers:{
+        Authorization: `Bearer ${user}`
+      }
+    }, { name, description, price, currency, category, provider, contactInfo })
+    .then(response => {
+      console.log(response.data)
+    }).catch(err => {
+      console.log(err)
+    })
+  }
   // const jobsInCategory = async () => {
   //   await axios.get(`http://localhost:3000/services/service/${authStore.userCategory}`)
   //     .then((response) => {
@@ -29,5 +39,5 @@ export const useServiceStore = defineStore("services", () => {
   //     })
   //     .catch((err) => console.log(err));
   // };
-  return { getServices, services };
+  return { getServices, services, createJobs };
 });
