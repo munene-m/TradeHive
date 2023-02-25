@@ -310,7 +310,7 @@ onMounted(() => {
 }
 .settings h1 {
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 2px solid #ccc;
   height: 2em;
   width: 2em;
   border-radius: 50%;
@@ -341,7 +341,7 @@ settings h3 {
 }
 form {
   position: relative;
-  top: 8rem;
+  /* top: 8rem; */
   width: 330px;
   padding: 14px 28px;
   text-align: left;
@@ -349,7 +349,6 @@ form {
   background: #fff;
 }
 label {
-  display: block;
   font-size: 16px;
 }
 .names {
@@ -366,12 +365,13 @@ input[type="tel"] {
   box-sizing: border-box;
   border: none;
   outline: none;
-  /* border-bottom: 2px solid #919191; */
+  border: 2px solid #bbb;
   line-height: 1.5em;
   background: #ededed;
     line-height: 1.5rem;
     border-radius: 4px;
     padding: 6px;
+    margin-bottom: 18px;
 }
 
 .checkboxes {
@@ -381,6 +381,9 @@ input[type="tel"] {
   background: #eee;
     border-radius: 6px;
     padding: 10px;
+    margin-bottom:18px;
+    border: 2px solid #bbb;
+    gap:2px;
 }
 button{
     border: none;
