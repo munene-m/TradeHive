@@ -6,6 +6,9 @@ const router = useRouter();
 const handleSubmit = () => {
   router.push("/register");
 };
+const handleSubmitStart = () =>{
+  router.push('/home-page')
+}
 </script>
 
 <template>
@@ -18,6 +21,7 @@ const handleSubmit = () => {
           rates.
         </p>
         <button v-if="!authStore.user" @click="handleSubmit">Get started</button>
+        <button v-else @click="handleSubmitStart">Get started</button>
       </div>
       <div class="community-img">
         <img src="../assets/images/Group 5.png" alt="" />
