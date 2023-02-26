@@ -4,15 +4,15 @@ import { useAuthStore } from "./stores/auth";
 import LogOutIcon from "./assets/icons/LogOut.vue";
 // import SettingsIcon from "./assets/icons/SettingsIcon.vue";
 import { createAvatar } from "@dicebear/core";
-import { loreleiNeutral } from "@dicebear/collection";
+import { thumbs } from "@dicebear/collection";
 const authStore = useAuthStore();
 const router = useRouter();
 
-const avatar = createAvatar(loreleiNeutral, {
-  seed: "John Doe",
+const avatar = createAvatar(thumbs, {
+  seed: "",
   size: 64,
   radius: 50,
-  backgroundColor: ["c0aede", "b6e3f4"],
+  backgroundColor: ["dc143c"],
   glasses: ["variant01"],
 }).toDataUriSync();
 
@@ -92,7 +92,7 @@ nav > div {
 }
 .loginBtn {
   padding: 10px 20px;
-  border: 2px solid crimson;
+  border: 2px solid #dc143c;
   border-radius: 28px;
   font-weight: bold;
   border: nonw;
