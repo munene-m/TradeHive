@@ -5,7 +5,7 @@ import axios from "axios";
 export const useServiceStore = defineStore("services", () => {
   let user = JSON.parse(localStorage.getItem("token"));
   const userServices = ref(null);
-  const services = ref([])
+  const services = ref([]);
 
   const getServices = async () => {
     await fetch("http://localhost:3000/services/create", {
@@ -18,18 +18,21 @@ export const useServiceStore = defineStore("services", () => {
       .then((response) => (userServices.value = response.category))
       .catch((err) => console.log(err));
   };
-  const createJobs = async (name, description, price, currency, category, provider, contactInfo) => {
-    axios.post("http://localhost:3000/services/create",{
-      headers:{
-        Authorization: `Bearer ${user}`
-      }
-    }, { name, description, price, currency, category, provider, contactInfo })
-    .then(response => {
-      console.log(response.data)
-    }).catch(err => {
-      console.log(err)
-    })
-  }
+  const createJobs = async ( name, description, price, currency, category, provider, contactInfo) => {
+    axios.post("http://localhost:3000/services/create",{ name, description, price, currency, category, provider, contactInfo, },
+        {
+          headers: {
+            Authorization: `Bearer ${user}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   // const jobsInCategory = async () => {
   //   await axios.get(`http://localhost:3000/services/service/${authStore.userCategory}`)
   //     .then((response) => {
