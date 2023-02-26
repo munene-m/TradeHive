@@ -6,7 +6,7 @@ const asyncHandler = require('express-async-handler')
 const createService = asyncHandler(async (req, res) => {
     //Get these values from the request body of the client side
     const { name, description, price, currency, category, provider, contactInfo } = req.body
-    if(!name || !description || !price || !duration || !currency || !category || !provider || !contactInfo) {
+    if(!name || !description || !price || !currency || !category || !provider || !contactInfo) {
         res.status(400)
         throw new Error("Please enter all required fields")
     }

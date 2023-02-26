@@ -12,9 +12,8 @@ const ServiceSchema = mongoose.Schema({
         trim: true
     },
     price: {
-        type: Number,
-        required: true,
-        min: 0
+        type: String,
+        required: true
     },
     currency: {
         type: String,
