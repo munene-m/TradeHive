@@ -120,18 +120,28 @@ const getUsers = asyncHandler(async (req, res) => {
   const users = await authModel.find({category: req.params.value})
   if(!users) {
     res.status(400)
-    throw new Error("There are no users in that category")
+    throw new Error("user details not found")
 } else {
     res.status(201).json(users)
 }
 })
 
+const getUser = asyncHandler(async (req, res) => {
+  const users = await authModel.findById(req.params.id)
+  if(!users) {
+    res.status(400)
+    throw new Error("user details not found")
+} else {
+    res.status(201).json(users)
+}
+})
+
+
 const getFreelanceUsers = asyncHandler(async(req, res) => {
   const users = await authModel.find({
-    $and:[
-      {role: 'Freelancer'},
-      { category: req.params.value}
-    ]
+    role: 'Freelancer',
+     category: req.params.value
+    
   })
   if(!users) {
     res.status(400)
@@ -154,5 +164,6 @@ module.exports = {
   updateUser,
   getCredentials,
   getUsers,
+  getUser,
   getFreelanceUsers
 };
