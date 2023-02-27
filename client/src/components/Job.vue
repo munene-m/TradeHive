@@ -15,7 +15,7 @@ onMounted(() => {
     .then((response) => {
       // Handle the response data
       console.log(response.data);
-      jobs.value.push(response.data)
+      jobs.value.push(response.data);
     })
     .catch((error) => {
       // Handle the error
@@ -26,12 +26,17 @@ onMounted(() => {
 
 <template>
   <div v-for="job in jobs" :key="jobId">
-    <p>Title: {{ job.name }}</p>
+    <h2>Title: {{ job.name }}</h2>
+    <h3>Description: {{ job.description }}</h3>
   </div>
 </template>
 
 <style scoped>
 div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   position: relative;
   top: 10rem;
 }

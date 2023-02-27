@@ -341,7 +341,7 @@ settings h3 {
 }
 form {
   position: relative;
-  /* top: 8rem; */
+  top: 8rem;
   width: 330px;
   padding: 14px 28px;
   text-align: left;
