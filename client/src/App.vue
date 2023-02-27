@@ -4,11 +4,11 @@ import { useAuthStore } from "./stores/auth";
 import LogOutIcon from "./assets/icons/LogOut.vue";
 // import SettingsIcon from "./assets/icons/SettingsIcon.vue";
 import { createAvatar } from "@dicebear/core";
-import { thumbs } from "@dicebear/collection";
+import { pixelArt } from "@dicebear/collection";
 const authStore = useAuthStore();
 const router = useRouter();
 
-const avatar = createAvatar(thumbs, {
+const avatar = createAvatar(pixelArt, {
   seed: "",
   size: 64,
   radius: 50,

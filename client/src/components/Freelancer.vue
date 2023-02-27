@@ -11,11 +11,11 @@ const props = defineProps({
 });
 onMounted(() => {
   axios
-    .get(`http://localhost:3000/auth/users/${props.freelancerId}`)
+    .get(`http://localhost:3000/auth/user/${props.freelancerId}`)
     .then((response) => {
       // Handle the response data
       console.log(response.data);
-      freelancers.value.push(response.data)
+      freelancers.value.push(response.data)   
     })
     .catch((error) => {
       // Handle the error
