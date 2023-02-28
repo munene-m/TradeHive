@@ -7,19 +7,19 @@ export const useServiceStore = defineStore("services", () => {
   const userServices = ref(null);
   const services = ref([]);
 
-  const getServices = async () => {
-    await fetch("http://localhost:3000/services/create", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${user}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((response) => (userServices.value = response.category))
-      .catch((err) => console.log(err));
-  };
-  const createJobs = async ( name, description, price, currency, category, provider, contactInfo) => {
-    axios.post("http://localhost:3000/services/create",{ name, description, price, currency, category, provider, contactInfo, },
+  // const getServices = async () => {
+  //   await fetch("http://localhost:3000/services/create", {
+  //     method: "POST",
+  //     headers: {
+  //       Authorization: `Bearer ${user}`,
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((response) => (userServices.value = response.category))
+  //     .catch((err) => console.log(err));
+  // };
+  const createJobs = async ( name, description, price, category, provider, contactInfo) => {
+    axios.post("http://localhost:3000/services/create",{ name, description, price, category, provider, contactInfo, },
         {
           headers: {
             Authorization: `Bearer ${user}`,
@@ -42,5 +42,5 @@ export const useServiceStore = defineStore("services", () => {
   //     })
   //     .catch((err) => console.log(err));
   // };
-  return { getServices, services, createJobs };
+  return {  services, createJobs };
 });
