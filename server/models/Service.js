@@ -15,10 +15,6 @@ const ServiceSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    currency: {
-        type: String,
-        required: true,
-    },
     provider: {
         type: String,
         required: true

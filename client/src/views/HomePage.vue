@@ -91,7 +91,7 @@ const formData = reactive({
     jobDesc: "",
     budget: "",
     selectedCategory: "",
-    selectedCurrency: ""
+    // selectedCurrency: ""
 })
 const rules = computed(() => {
     return{
@@ -101,14 +101,14 @@ const rules = computed(() => {
         jobDesc: { required: helpers.withMessage("Description is required", required) },
         budget: { required: helpers.withMessage("Budget is required", required) },
         selectedCategory: { required: helpers.withMessage("Please select a category", required) },
-        selectedCurrency: { required: helpers.withMessage("Please select a currency", required) }
+        // selectedCurrency: { required: helpers.withMessage("Please select a currency", required) }
     }
 })
 const v$ = useVuelidate(rules, formData)
 const handleSubmit = async () => {
     const result = await v$.value.$validate()
     if(result){
-    serviceStore.createJobs(formData.jobTitle, formData.jobDesc, formData.budget, formData.selectedCurrency, formData.selectedCategory, formData.name, formData.contact)
+    serviceStore.createJobs(formData.jobTitle, formData.jobDesc, formData.budget, formData.selectedCategory, formData.name, formData.contact)
     showModal.value = false
     }
     setTimeout(() => {
@@ -118,7 +118,6 @@ const handleSubmit = async () => {
         formData.jobDesc = ""
         formData.budget = ""
         formData.selectedCategory = ""
-        formData.selectedCurrency = ""
     }, 1000)
 }
 const handleModal = async () => {
@@ -233,7 +232,7 @@ const handleModal = async () => {
               {{ v$.budget.$errors[0].$message }}
             </p>
 
-            <label for="currency">Currency</label><br />
+            <!-- <label for="currency">Currency</label><br />
             <div class="select">
               <select
                 name="currency"
@@ -247,7 +246,7 @@ const handleModal = async () => {
             </div>
             <p class="errorMsg" v-if="v$.selectedCurrency.$error">
               {{ v$.selectedCurrency.$errors[0].$message }}
-            </p>
+            </p> -->
 
             <button id="createJobBtn" type="submit">Submit</button>
           </form>
@@ -263,7 +262,7 @@ const handleModal = async () => {
           <h2>Job title - {{ job.name }}</h2>
           <p>Job description - {{ job.description }}</p>
           <p>Duration - {{ job.duration }}</p>
-          <p>Payment - {{ job.price }} {{ job.currency }}</p>
+          <p>Payment - {{ job.price }}</p>
           <button
             @click="router.push({ path: `/home-page/${job._id}` })"
             class="showDetails"
@@ -276,11 +275,7 @@ const handleModal = async () => {
     <div id="freelancerPage" v-else-if="authStore.role === 'Client'">
       <h2 class="RecoTitle">Recommended freelancers for you</h2>
       <div class="freelancerGrid" v-if="freelancerRecommendations !== null">
-        <div
-          id="freelancer"
-          v-for="freelancer in freelancerRecommendations"
-          :key="freelancer._id"
-        >
+        <div id="freelancer" v-for="freelancer in freelancerRecommendations" :key="freelancer._id">
           <h2>{{ freelancer.firstname }} {{ freelancer.lastname }}</h2>
           <p>Location: {{ freelancer.location }}</p>
           <p>Working hours - {{ freelancer.workingHours }}</p>
@@ -335,12 +330,6 @@ const handleModal = async () => {
 }
 .header img {
   width: 15%;
-}
-.searchBar {
-  display: flex;
-  position: relative;
-  top: 10rem;
-  min-width: 100px;
 }
 .icon {
   position: absolute;
@@ -447,7 +436,7 @@ h3 {
 .modal-mask {
   position: fixed;
   inset: 0;
-  background: rgb(0, 0, 0, 0.6);
+  background: rgb(0, 0, 0, 0.7);
   backdrop-filter: blur(5px); /* Change blur amount as needed */
   -webkit-backdrop-filter: blur(5px); /* For Safari */
   display: grid !important;
@@ -474,8 +463,7 @@ h3 {
 .clientInfo > div {
   width: 100%;
 }
-input[type="text"],
-input[type="password"]{
+input {
   width: 100%;
   margin-top: 6px;
   /* margin-bottom: 8px; */
@@ -492,6 +480,10 @@ input[type="password"]{
   font-family: inherit;
   font-weight: 800;
   font-size: 14px;
+}
+input:focus {
+  background: #fff;
+  border: 2px solid rgb(0, 166, 255);
 }
 textarea {
   width: 100%;
@@ -510,6 +502,10 @@ textarea {
   font-family: inherit;
   font-weight: 800;
   font-size: 14px;
+}
+textarea:focus {
+  background: #fff;
+  border: 2px solid rgb(0, 166, 255);
 }
 select {
   appearance: none;
