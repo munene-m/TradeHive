@@ -26,8 +26,12 @@ onMounted(() => {
 
 <template>
   <div v-for="job in jobs" :key="jobId">
-    <h2>Title: {{ job.name }}</h2>
+    <h2>Client - {{ job.provider }}</h2>
+    <span>Contact - {{ job.contactInfo }}</span>
+    <h3>Title: {{ job.name }}</h3>
     <h3>Description: {{ job.description }}</h3>
+    <p>Budget - {{ job.currency }} {{ job.price }}</p>
+    <button><a href=""></a></button>
   </div>
 </template>
 
