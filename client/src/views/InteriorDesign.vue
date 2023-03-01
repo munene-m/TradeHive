@@ -37,7 +37,8 @@ const getFreelancers = axios.get(`http://localhost:3000/auth/users/${categoryNam
   <p class="titleDesc" v-if="jobs === []">No jobs have been added yet</p>
   <div v-else class="freelancerPage" v-if="authStore.role === 'Freelancer'">
     <div id="service" v-for="job in jobs" :key="job._id">
-      <h2>Client - {{ job.provider }}, Contact - {{ job.contactInfo }}</h2>
+      <h2>Client - {{ job.provider }}</h2>
+      <span>Contact - {{ job.contactInfo }}</span>
       <h3>Job title - {{ job.name }}</h3>
       <p>Job description - {{ job.description }}</p>
       <p>Payment - {{ job.price }} {{ job.currency }}</p>
