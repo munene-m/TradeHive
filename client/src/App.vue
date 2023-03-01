@@ -9,7 +9,7 @@ const authStore = useAuthStore();
 const router = useRouter();
 
 const avatar = createAvatar(pixelArt, {
-  seed: "",
+  seed: Math.random("John"),
   size: 64,
   radius: 50,
   backgroundColor: ["dc143c"],
