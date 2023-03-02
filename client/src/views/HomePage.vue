@@ -41,8 +41,8 @@ async function getCategoryData(category) {
     .get(`http://localhost:3000/services/service/${category}`)
     .then((response) => {
       // Handle the response data
-      jobRecommendations.value.push(response.data[0]);
       console.log(jobRecommendations.value);
+      jobRecommendations.value.push(response.data);
     })
     .catch((error) => {
       // Handle the error
@@ -50,8 +50,8 @@ async function getCategoryData(category) {
     });
 }
 
-const getFreelancers = async (category) => {
-  await axios
+const getFreelancers = (category) => {
+  axios
     .get(`http://localhost:3000/auth/freelancers/${category}`)
     .then((response) => {
       // Handle the response data
@@ -258,7 +258,7 @@ const handleModal = async () => {
     <div class="recommendations" v-if="authStore.role === 'Freelancer'">
       <h2 class="RecoTitle">Recommended jobs for you</h2>
       <div v-if="jobRecommendations !== null">
-        <div id="service" v-for="job in jobRecommendations" :key="job._id">
+        <div id="service" v-for="job in jobRecommendations[0]" :key="job._id">
           <h2>Job title - {{ job.name }}</h2>
           <p>Job description - {{ job.description }}</p>
           <p>Duration - {{ job.duration }}</p>
@@ -365,7 +365,7 @@ const handleModal = async () => {
   margin-left: 4rem;
 }
 #freelancer {
-  border: 1px solid #ccc;
+  border: 1px solid #707070;
   border-radius: 8px;
   width: 60%;
   padding: 10px 20px;
@@ -380,7 +380,7 @@ const handleModal = async () => {
   color: white;
   background-color: crimson;
   border: 2px solid crimson;
-  border-radius: 28px;
+  border-radius: 10px;
   font-weight: bold;
   display: flex;
   cursor: pointer;
