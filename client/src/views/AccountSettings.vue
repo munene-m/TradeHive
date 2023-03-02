@@ -301,7 +301,7 @@ onMounted(() => {
         v-model="freelanceFormData.contact"
         id="phone"
         name="phone"
-        placeholder="e.g 0712345678"
+        placeholder="e.g +254 712345678"
         autocomplete="off"
       />
       <!-- <p class="errorMsg" v-if="v$.contact.$error">{{ v$.contact.$errors[0].$message }}</p> -->
