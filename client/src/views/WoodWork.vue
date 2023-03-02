@@ -16,16 +16,16 @@ onMounted(() => {
 const getJobs = axios.get(`http://localhost:3000/services/service/${categoryName}`)
 .then((response) => {
     console.log(response.data);
-    jobs.value.push(response.data[0])
+    jobs.value.push(response.data)
 
 }).catch((err) => {
     console.log(err)
 })
 
-const getFreelancers = axios.get(`http://localhost:3000/auth/users/${categoryName}`)
+const getFreelancers = axios.get(`http://localhost:3000/auth/freelancers/${categoryName}`)
 .then((response) => {
     console.log(response.data);
-    freelancers.value.push(response.data[0])
+    freelancers.value.push(response.data)
 
 }).catch((err) => {
     console.log(err)
@@ -36,12 +36,10 @@ const getFreelancers = axios.get(`http://localhost:3000/auth/users/${categoryNam
   <h2 class="title">Recommended</h2>
   <p class="titleDesc" v-if="jobs === []">No jobs have been added yet</p>
   <div v-else class="freelancerPage" v-if="authStore.role === 'Freelancer'">
-    <div id="service" v-for="job in jobs" :key="job._id">
+    <div id="service" v-for="job in jobs[0]" :key="job._id">
       <h2>Client - {{ job.provider }}</h2>
-      <span>Contact - {{ job.contactInfo }}</span>
       <h3>Job title - {{ job.name }}</h3>
       <p>Job description - {{ job.description }}</p>
-      <p>Payment - {{ job.price }} {{ job.currency }}</p>
       <button
         @click="router.push({ path: `/home-page/${job._id}` })"
         class="showDetails"
@@ -51,16 +49,13 @@ const getFreelancers = axios.get(`http://localhost:3000/auth/users/${categoryNam
     </div>
   </div>
     <div class="clientPage" v-if="authStore.role === 'Client'">
-        <h2 class="title">Recommended</h2>
         <p v-if="freelancers === []">No freelancers in this category yet</p>
         <div v-else class="freelancerGrid">
-          <div  id="freelancer" v-for="freelancer in freelancers" :key="freelancer._id">
+          <div  id="freelancer" v-for="freelancer in freelancers[0]" :key="freelancer._id">
           <h2>{{ freelancer.firstname }} {{ freelancer.lastname }}</h2>
           <p>Location: {{ freelancer.location }}</p>
           <p>Working hours - {{ freelancer.workingHours }}</p>
-          <button @click="router.push({ path: `/home-page/freelancer/${freelancer._id}` })" class="showDetails">
-            Show details
-          </button>
+          <p class="freelancerContact">Contact info - {{ freelancer.contact }}</p>
         </div>
         </div>
     </div>
@@ -113,7 +108,7 @@ const getFreelancers = axios.get(`http://localhost:3000/auth/users/${categoryNam
 }
 #freelancer {
   margin: auto;
-  border: 1px solid #ccc;
+  border: 1px solid #707070;
   border-radius: 8px;
   width: 60%;
   padding: 10px 20px;
@@ -122,6 +117,12 @@ const getFreelancers = axios.get(`http://localhost:3000/auth/users/${categoryNam
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+.freelancerContact{
+  font-weight: 700;
+    border: 1px solid crimson;
+    padding: 2px 7px;
+    border-radius: 4px;
 }
 button {
   border: none;

@@ -13,9 +13,7 @@ onMounted(() => {
   getFreelancers;
 });
 
-const getJobs = axios
-  .get(`http://localhost:3000/services/service/${categoryName}`)
-  .then((response) => {
+const getJobs = axios.get(`http://localhost:3000/services/service/${categoryName}`).then((response) => {
     console.log(response.data);
     jobs.value.push(response.data[0]);
   })
@@ -23,11 +21,9 @@ const getJobs = axios
     console.log(err);
   });
 
-const getFreelancers = axios
-  .get(`http://localhost:3000/auth/users/${categoryName}`)
-  .then((response) => {
+const getFreelancers = axios.get(`http://localhost:3000/auth/freelancers/${categoryName}`).then((response) => {
     console.log(response.data);
-    freelancers.value.push(response.data[0]);
+    freelancers.value.push(response.data);
   })
   .catch((err) => {
     console.log(err);
@@ -53,25 +49,18 @@ const getFreelancers = axios
     </div>
   </div>
   <div class="clientPage" v-if="authStore.role === 'Client'">
-    <h2 class="title">Recommended</h2>
     <p v-if="freelancers === []">No freelancers in this category yet</p>
     <div v-else class="freelancerGrid">
       <div
         id="freelancer"
-        v-for="freelancer in freelancers"
+        v-for="freelancer in freelancers[0]"
         :key="freelancer._id"
       >
         <h2>{{ freelancer.firstname }} {{ freelancer.lastname }}</h2>
         <p>Location: {{ freelancer.location }}</p>
         <p>Working hours - {{ freelancer.workingHours }}</p>
-        <button
-          @click="
-            router.push({ path: `/home-page/freelancer/${freelancer._id}` })
-          "
-          class="showDetails"
-        >
-          Show details
-        </button>
+        <p class="freelancerContact">Contact info - {{ freelancer.contact }}</p>
+
       </div>
     </div>
   </div>
@@ -125,7 +114,7 @@ const getFreelancers = axios
 }
 #freelancer {
   margin: auto;
-  border: 1px solid #ccc;
+  border: 1px solid #707070;
   border-radius: 8px;
   width: 60%;
   padding: 10px 20px;
@@ -134,6 +123,12 @@ const getFreelancers = axios
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+.freelancerContact{
+  font-weight: 700;
+    border: 1px solid crimson;
+    padding: 2px 7px;
+    border-radius: 4px;
 }
 button {
   border: none;
