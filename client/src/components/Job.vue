@@ -27,11 +27,11 @@ onMounted(() => {
 <template>
   <div v-for="job in jobs" :key="jobId">
     <h2>Client - {{ job.provider }}</h2>
-    <span>Contact - {{ job.contactInfo }}</span>
-    <h3>Title: {{ job.name }}</h3>
+    <h3>Job: {{ job.name }}</h3>
     <h3>Description: {{ job.description }}</h3>
-    <p>Budget - {{ job.currency }} {{ job.price }}</p>
-    <button><a href=""></a></button>
+    <h4>Budget - {{ job.currency }} {{ job.price }}</h4>
+    <span>Contact - {{ job.contactInfo }}</span>
+
   </div>
 </template>
 
@@ -43,5 +43,11 @@ div {
   flex-direction: column;
   position: relative;
   top: 10rem;
+}
+div > span {
+  font-weight: 700;
+    border: 1px solid crimson;
+    padding: 2px 7px;
+    border-radius: 4px;
 }
 </style>
