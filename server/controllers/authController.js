@@ -127,7 +127,7 @@ const getUsers = asyncHandler(async (req, res) => {
 })
 
 const getUser = asyncHandler(async (req, res) => {
-  const users = await authModel.findById(req.params.id)
+  const users = await authModel.find({_id: req.params.id, role: 'Freelancer'})
   if(!users) {
     res.status(400)
     throw new Error("user details not found")
