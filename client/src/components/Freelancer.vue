@@ -25,8 +25,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-for="freelancer in freelancers" :key="freelancerId">
-    <p>Name: {{ freelancer.firstname }}</p>
+  <div v-for="freelancer in freelancers[0]" :key="freelancerId">
+    <h2>Name: {{ freelancer.firstname }} {{ freelancer.lastname }}</h2>
   </div>
 </template>
 
