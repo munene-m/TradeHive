@@ -389,7 +389,7 @@ input[type="tel"] {
 }
 input:focus {
   background: #fff;
-  border: 2px solid rgb(0, 166, 255);
+  border: 2px solid crimson;
 }
 .checkboxes {
   display: grid;
