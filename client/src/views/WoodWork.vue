@@ -35,7 +35,7 @@ const getFreelancers = axios.get(`http://localhost:3000/auth/freelancers/${categ
 <template>
   <h2 class="title">Recommended</h2>
   <p class="titleDesc" v-if="jobs === []">No jobs have been added yet</p>
-  <div v-else class="freelancerPage" v-if="authStore.role === 'Freelancer'">
+  <div v-else class="jobPage" v-if="authStore.role === 'Freelancer'">
     <div id="service" v-for="job in jobs[0]" :key="job._id">
       <h2>Client - {{ job.provider }}</h2>
       <h3>Job title - {{ job.name }}</h3>
@@ -74,9 +74,17 @@ const getFreelancers = axios.get(`http://localhost:3000/auth/freelancers/${categ
     top: 9rem;
     color: #989898;
   } */
-  .freelancerPage, .clientPage{
+  .jobPage, .clientPage{
     position: relative;
     top: 9rem;
+  }
+  .jobPage{
+    margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 20px;
+  margin-right: 4rem;
+  margin-left: 4rem;
   }
   .title {
   position: relative;
@@ -91,12 +99,16 @@ const getFreelancers = axios.get(`http://localhost:3000/auth/freelancers/${categ
   top: 9rem;
 }
   #service {
-  border: 1px solid #ccc;
+    margin: auto;
+  border: 1px solid #707070;
   border-radius: 8px;
-  width: 65%;
+  width: 60%;
   padding: 10px 20px;
   margin-bottom: 10px;
-  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 .freelancerGrid {
   margin-top: 1rem;
