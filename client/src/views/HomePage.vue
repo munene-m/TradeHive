@@ -1,8 +1,8 @@
 <script setup>
 import { onMounted, ref, watchEffect, reactive, computed } from "vue";
 import { useAuthStore } from "../stores/auth";
-import { useVuelidate } from '@vuelidate/core'
-import { required, helpers } from '@vuelidate/validators'
+import { useVuelidate } from "@vuelidate/core";
+import { required, helpers } from "@vuelidate/validators";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import Modal from "../components/Modal.vue";
@@ -13,9 +13,10 @@ const headerIfFreelancer = ref("headerIfFreelancer");
 const router = useRouter();
 const authStore = useAuthStore();
 const getUser = authStore.getUser();
-const jobsInCategory = authStore.jobsInCategory();
+// const jobsInCategory = authStore.jobsInCategory();
 const jobRecommendations = ref([]);
 const freelancerRecommendations = ref([]);
+const uniqueFreelancers = ref([])
 
 let showModal = ref(false);
 function jobForm() {
@@ -23,55 +24,51 @@ function jobForm() {
 }
 
 onMounted(() => {
-  getUser, filterCategories;
+  getUser;
   getCategoryData;
   getFreelancers;
 });
-watchEffect(() => {
-  if (authStore.userCategory !== null) {
-    jobsInCategory;
-  }
-});
+
 function filterCategories(category) {
   return authStore.category.filter((item) => item === category);
 }
 
 async function getCategoryData(category) {
-  await axios
-    .get(`http://localhost:3000/services/service/${category}`)
-    .then((response) => {
-      // Handle the response data
-      console.log(jobRecommendations.value);
-      jobRecommendations.value.push(response.data);
-    })
-    .catch((error) => {
-      // Handle the error
-      console.log(error);
-    });
+  try {
+    await axios.get(`http://localhost:3000/services/service/${category}`).then((response) => {
+        // Handle the response data
+        console.log(jobRecommendations.value);
+        jobRecommendations.value.push(response.data);
+      });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-const getFreelancers = (category) => {
-  axios
-    .get(`http://localhost:3000/auth/freelancers/${category}`)
-    .then((response) => {
-      // Handle the response data
-      const filteredData = response.data.filter((array, index, self) => {
-        return (
-          index ===
-          self.findIndex((a) => JSON.stringify(a) === JSON.stringify(array))
-        );
+async function getFreelancers(category) {
+  try {
+    await axios.get(`http://localhost:3000/auth/freelancers/${category}`).then((response) => {
+      const freelancers = response.data
+
+      // Filter out duplicates
+      const filteredData = freelancers.filter((freelancer) => {
+        const exists = uniqueFreelancers.value.some((uniqueFreelancer) => {
+          return JSON.stringify(uniqueFreelancer) === JSON.stringify(freelancer)
+        })
+        return !exists
       });
-      for (let i = 0; i < filteredData.length; i++) {
-        const element = filteredData[i];
-        freelancerRecommendations.value.push(element);
-        console.log(freelancerRecommendations.value);
-      }
+
+      // Add unique freelancers to the array
+      filteredData.forEach((freelancer) => {
+        uniqueFreelancers.value.push(freelancer)
+        freelancerRecommendations.value.push(freelancer)
+        console.log(freelancer)
+      })
     })
-    .catch((error) => {
-      // Handle the error
-      console.log(error);
-    });
-};
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 authStore.category.forEach((category) => {
   // Filter the array to create a new array with only the current category
@@ -83,43 +80,54 @@ authStore.category.forEach((category) => {
     getFreelancers(filteredCategories[0]);
   }
 });
-const serviceStore = useServiceStore()
+const serviceStore = useServiceStore();
 const formData = reactive({
-    name: "",
-    contact: "",
-    jobTitle: "",
-    jobDesc: "",
-    budget: "",
-    selectedCategory: "",
-    // selectedCurrency: ""
-})
+  name: "",
+  contact: "",
+  jobTitle: "",
+  jobDesc: "",
+  budget: "",
+  selectedCategory: "",
+  // selectedCurrency: ""
+});
 const rules = computed(() => {
-    return{
-        name: { required: helpers.withMessage("Name is required", required) },
-        contact: { required: helpers.withMessage("Contact is required", required) },
-        jobTitle: { required: helpers.withMessage("Job title is required", required) },
-        jobDesc: { required: helpers.withMessage("Description is required", required) },
-        budget: { required: helpers.withMessage("Budget is required", required) },
-        selectedCategory: { required: helpers.withMessage("Please select a category", required) },
-        // selectedCurrency: { required: helpers.withMessage("Please select a currency", required) }
-    }
-})
-const v$ = useVuelidate(rules, formData)
+  return {
+    name: { required: helpers.withMessage("Name is required", required) },
+    contact: { required: helpers.withMessage("Contact is required", required) },
+    jobTitle: {
+      required: helpers.withMessage("Job title is required", required),
+    },
+    jobDesc: {
+      required: helpers.withMessage("Description is required", required),
+    },
+    budget: { required: helpers.withMessage("Budget is required", required) },
+    selectedCategory: {
+      required: helpers.withMessage("Please select a category", required),
+    },
+    // selectedCurrency: { required: helpers.withMessage("Please select a currency", required) }
+  };
+});
+const v$ = useVuelidate(rules, formData);
 const handleSubmit = async () => {
-    const result = await v$.value.$validate()
-    if(result){
-    serviceStore.createJobs(formData.jobTitle, formData.jobDesc, formData.budget, formData.selectedCategory, formData.name, formData.contact)
-    showModal.value = false
-    }
-    setTimeout(() => {
-        formData.name = "",
-        formData.contact = "",
-        formData.jobTitle = ""
-        formData.jobDesc = ""
-        formData.budget = ""
-        formData.selectedCategory = ""
-    }, 1000)
-}
+  const result = await v$.value.$validate();
+  if (result) {
+    serviceStore.createJobs(
+      formData.jobTitle,
+      formData.jobDesc,
+      formData.budget,
+      formData.selectedCategory,
+      formData.name,
+      formData.contact
+    );
+    showModal.value = false;
+  }
+  setTimeout(() => {
+    (formData.name = ""), (formData.contact = ""), (formData.jobTitle = "");
+    formData.jobDesc = "";
+    formData.budget = "";
+    formData.selectedCategory = "";
+  }, 1000);
+};
 const handleModal = async () => {
   const response = await serviceStore.createJobs();
   console.log(response);
@@ -275,7 +283,11 @@ const handleModal = async () => {
     <div id="freelancerPage" v-else-if="authStore.role === 'Client'">
       <h2 class="RecoTitle">Recommended freelancers for you</h2>
       <div class="freelancerGrid" v-if="freelancerRecommendations !== null">
-        <div id="freelancer" v-for="freelancer in freelancerRecommendations" :key="freelancer._id">
+        <div
+          id="freelancer"
+          v-for="freelancer in freelancerRecommendations"
+          :key="freelancer._id"
+        >
           <h2>{{ freelancer.firstname }} {{ freelancer.lastname }}</h2>
           <p>Location: {{ freelancer.location }}</p>
           <p>Working hours - {{ freelancer.workingHours }}</p>
@@ -537,7 +549,7 @@ select::-ms-expand {
   line-height: 1.5;
   background-color: #fff;
   background-image: linear-gradient(to top, #eeeeee, #fff 33%);
-  margin-top:10px
+  margin-top: 10px;
 }
 button[type="submit"] {
   width: 100%;
@@ -551,17 +563,17 @@ button[type="submit"] {
   transition: 0.3s ease-in-out;
   font-size: 17px;
 }
-.errorMsg{
-    color: red;
-    font-size: 12px; 
-    margin:0;
+.errorMsg {
+  color: red;
+  font-size: 12px;
+  margin: 0;
 }
 @media only screen and (max-height: 1250px) {
   .modal-container {
     margin: 1em;
   }
 }
-.select{
-    font-size: .8rem;
+.select {
+  font-size: 0.8rem;
 }
 </style>
