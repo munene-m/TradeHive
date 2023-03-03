@@ -12,13 +12,11 @@ const ReviewSchema = mongoose.Schema({
         max: 5
     },
     reviewer: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Auth', //referencing the auth model
+        type: String,
         required: true
     },
     reviewed: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Auth',
+        type: String,
         required: true
     },
     createdAt: {
