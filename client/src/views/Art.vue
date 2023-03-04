@@ -126,6 +126,7 @@ margin: auto;
 border: 1px solid #707070;
 border-radius: 8px;
 width: 60%;
+max-width:350px;
 padding: 10px 20px;
 margin-bottom: 10px;
 display: flex;
