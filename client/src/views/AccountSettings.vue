@@ -177,7 +177,7 @@ onMounted(() => {
         v-model="formData.contact"
         id="phone"
         name="phone"
-        placeholder="e.g 0712345678"
+        placeholder="e.g +254 712345678"
         autocomplete="off"
       />
       <button type="submit">Update</button>
@@ -336,7 +336,10 @@ onMounted(() => {
   color: #888585;
   margin: 0;
 }
-settings h3 {
+.settings h2{
+  text-align: center;
+}
+.settings h3 {
   margin: 0;
   text-transform: capitalize;
 }
