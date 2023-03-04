@@ -164,9 +164,15 @@ img{
     align-items: center;
     padding-right: 0;
     padding-left: 0;
+    justify-content: space-between;
+    margin-right: 10px;
+    margin-left: 10px;;
   }
   .loginBtn {
     display: none;
+  }
+  .logOutBtn{
+    padding: 6px 12px;
   }
 }
 </style>
