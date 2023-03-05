@@ -130,6 +130,7 @@ const getFreelancers = axios.get(`http://localhost:3000/auth/freelancers/${categ
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  height:40vh;
 }
 .freelancerContact{
   font-weight: 700;
