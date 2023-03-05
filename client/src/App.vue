@@ -100,6 +100,9 @@ nav > div {
   outline: none;
   color: black;
 }
+.loginBtn:hover{
+    transform: scale(0.98);
+  }
 .registerBtn {
   padding: 10px 20px;
   color: white;
@@ -109,6 +112,9 @@ nav > div {
   margin-left: 12px;
   font-weight: bold;
 }
+.registerBtn:hover{
+    transform: scale(0.98);
+  }
 .logOutBtn {
   padding: 10px 20px;
   color: white;
@@ -122,6 +128,9 @@ nav > div {
   align-items: center;
   gap: 5px;
 }
+.logOutBtn:hover{
+    transform: scale(0.98);
+  }
 .categories {
   position: absolute;
   padding: 1rem;
@@ -174,5 +183,6 @@ img{
   .logOutBtn{
     padding: 6px 12px;
   }
+
 }
 </style>

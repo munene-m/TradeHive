@@ -420,14 +420,17 @@ button {
 }
 .postjobBtn {
   padding: 8px 16px;
-  color: black;
-  background-color: rgb(0, 218, 0);
-  border: 2px solid rgb(0, 218, 0);
+  color: white;
+  background-color: crimson;
+  border: 2px solid crimson;
   border-radius: 28px;
   font-weight: bold;
   display: flex;
   cursor: pointer;
   align-items: center;
+}
+.postjobBtn:hover{
+  transform: scale(0.98);
 }
 h3 {
   margin: 0;
