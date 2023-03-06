@@ -55,7 +55,7 @@ const getFreelancers = axios.get(`http://localhost:3000/auth/freelancers/${categ
           <h2>{{ freelancer.firstname }} {{ freelancer.lastname }}</h2>
           <p>Location: {{ freelancer.location }}</p>
           <p>Working hours - {{ freelancer.workingHours }}</p>
-          <p class="freelancerContact">Contact info - {{ freelancer.contact }}</p>
+          <p class="freelancerContact">Contact - {{ freelancer.contact }}</p>
         </div>
         </div>
     </div>
@@ -130,7 +130,7 @@ const getFreelancers = axios.get(`http://localhost:3000/auth/freelancers/${categ
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  height: 40vh;
+  /* height: 40vh; */
 }
 .freelancerContact{
   font-weight: 700;
@@ -146,6 +146,12 @@ button {
   background: crimson;
   color: white;
   cursor: pointer;
+}
+@media only screen and (max-width: 768px){
+  .freelancerGrid{
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
   </style>
   
