@@ -103,7 +103,7 @@ const handleSubmit = async () => {
 .login-image img {
   display: flex;
   align-items: center;
-  height: 150px;
+  height: 180px;
   padding-top: 15rem;
   margin: auto;
 }
