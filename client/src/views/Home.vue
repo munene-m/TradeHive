@@ -13,6 +13,10 @@ const handleSubmitStart = () => {
 
 <template>
   <main>
+    <div class="pageTitle">
+      <h1>Welcome to TradeHive.</h1>
+    <p>A platform for freelancers to sell their skills and services.</p>
+    </div>
     <div class="container">
       <div class="hero-content">
         <h1>Get access to the brightest minds</h1>
@@ -50,9 +54,17 @@ const handleSubmitStart = () => {
   
   
 } */
+.pageTitle{
+  position: relative;
+  top:9rem;
+  text-align: center;
+}
+.pageTitle h1{
+  margin: 0;
+}
 .container {
   position: relative;
-  top: 3rem;
+  top: 8rem;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   align-items: center;
@@ -60,10 +72,10 @@ const handleSubmitStart = () => {
   margin-bottom: 12rem;
   /* margin: 0 6em; */
   /* background: #f5f2f2;*/
-  height: 80vh; 
+  height: 60vh; 
 }
 .hero-content {
-  padding: 0 3em;
+  padding: 0 4em;
 }
 .hero-content h1 {
   color: crimson;
@@ -85,6 +97,10 @@ const handleSubmitStart = () => {
   color: #fff;
   padding: 12px 20px;
   border-radius: 24px;
+  transition: .3s;
+}
+.hero-content button:hover{
+  transform: scale(0.96);
 }
 .community-img img {
   padding: 0 4em;
@@ -99,6 +115,9 @@ hr {
     align-items: center;
     margin: 2rem 0;;
 }
+.body-content div{
+  height: -webkit-fill-available;
+}
 .freelancersCard{
   display: flex;
   position: relative;
@@ -108,9 +127,11 @@ hr {
   padding: 8px 16px;
   align-items: center;
   justify-content: center;
-  border: 1px solid #ccc;
+  border: 1px solid #eeeeee;
   border-radius: 11px;
   max-width: 300px;
+  background-image: linear-gradient(0deg, #fff, #fff, #eeeeee 80%);
+
 }
 .freelancersCard p{
   text-align: center;
@@ -128,9 +149,10 @@ hr {
   padding: 8px 16px;
   align-items: center;
   justify-content: center;
-  border: 1px solid #ccc;
+  border: 1px solid #eeeeee;
   border-radius: 11px;
   max-width: 300px;
+  background-image: linear-gradient(to top, #fff, #fff, #eeeeee 95%);
 }
 .clientsCard p{
   text-align: center;
@@ -180,6 +202,9 @@ hr {
     grid-template-columns: repeat(1,1fr);
     place-items: center;
     gap:40px;
+}
+hr{
+  margin: 1em;
 }
 }
 
