@@ -106,8 +106,8 @@ nav > div {
 .registerBtn {
   padding: 10px 20px;
   color: white;
-  background-color: #f4605b;
-  border: 2px solid #f4605b;
+  background-color: crimson;
+  border: 2px solid crimson;
   border-radius: 28px;
   margin-left: 12px;
   font-weight: bold;
@@ -118,8 +118,8 @@ nav > div {
 .logOutBtn {
   padding: 10px 20px;
   color: white;
-  background-color: #f4605b;
-  border: 2px solid #f4605b;
+  background-color: crimson;
+  border: 2px solid crimson;
   border-radius: 28px;
   margin-left: 12px;
   font-weight: bold;
@@ -134,7 +134,6 @@ nav > div {
 .categories {
   position: absolute;
   padding: 1rem;
-  background: white;
   position: fixed;
   top: 5rem;
   right: 0;
@@ -145,10 +144,12 @@ nav > div {
   justify-content: space-evenly;
   align-items: center;
   z-index: 100;
+  background-image: linear-gradient(to bottom, rgb(251, 81, 115), #ffa4a1);
+
 }
-.categories .homePage {
+/* .categories .homePage {
   color: crimson;
-}
+} */
 .categories a {
   text-decoration: none;
   color: black;
