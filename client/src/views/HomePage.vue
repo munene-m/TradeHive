@@ -136,12 +136,7 @@ const handleModal = async () => {
 </script>
 
 <template>
-  <div
-    :class="[
-      authStore.role === 'Client' ? headerClass : '',
-      headerIfFreelancer,
-    ]"
-  >
+  <div :class="[authStore.role === 'Client' ? headerClass : headerIfFreelancer, ]">
     <div class="headerInfo">
       <h1>Welcome, {{ authStore.firstname }}</h1>
       <img src="../assets/images/Group 2.png" alt="" />
@@ -170,7 +165,7 @@ const handleModal = async () => {
                 </p>
               </div>
               <div>
-                <label for="contact">Contact information</label><br />
+                <label for="contact">Contact</label><br />
                 <input
                   type="text"
                   id="contact"
@@ -437,12 +432,12 @@ h3 {
   font-weight: 800;
   font-size: 2em;
 }
-.clientInfo {
+/* .clientInfo {
   display: flex;
   align-items: center;
   flex-direction: row;
-  gap: 20px;
-}
+  gap: 5px;
+} */
 .clientInfo > div {
   width: 100%;
 }
@@ -473,7 +468,7 @@ h3 {
   display: flex;
   align-items: center;
   flex-direction: row;
-  gap: 20px;
+  gap:5px;
 }
 .clientInfo > div {
   width: 100%;
@@ -575,8 +570,59 @@ button[type="submit"] {
   .modal-container {
     margin: 1em;
   }
-}
-.select {
+  .select {
   font-size: 0.8rem;
+  }
 }
+@media only screen and (max-width: 800px){
+  .header{
+    display: grid;
+    place-items: center;
+    grid-template-rows: repeat(2, 1fr);
+  }
+  .headerInfo{
+    width:100%;
+  }
+  .headerInfo h1{
+    margin:0;
+    margin-left: 0;
+    margin-right: 0;
+    font-size: 90%
+  }
+  .createJob{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+  .headerInfo img{
+  display: none;
+}
+.createJob p{
+  margin:0;
+}
+.freelancerGrid{
+  margin-left: 0;
+  margin-right: 0;
+}
+.jobs{
+  display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1em;
+    margin-left: 1em;
+}
+.RecoTitle{
+  margin:0;
+  text-align: center;
+}
+#freelancer{
+  width:80%;
+  margin: auto;
+}
+}
+
 </style>
