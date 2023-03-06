@@ -21,7 +21,8 @@
     "pinia": "^2.0.28",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
-    "vue3-carousel": "^0.2.9"
+    "vue3-carousel": "^0.2.9",
+    "vuejs3-star-ratings": "^1.0.9"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",
