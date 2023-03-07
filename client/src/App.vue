@@ -5,6 +5,8 @@ import LogOutIcon from "./assets/icons/LogOut.vue";
 // import SettingsIcon from "./assets/icons/SettingsIcon.vue";
 import { createAvatar } from "@dicebear/core";
 import { pixelArt } from "@dicebear/collection";
+import MenuIcon from "./assets/icons/MenuIcon.vue";
+import { ref } from "vue";
 const authStore = useAuthStore();
 const router = useRouter();
 
@@ -16,9 +18,14 @@ const avatar = createAvatar(pixelArt, {
   glasses: ["variant01"],
 }).toDataUriSync();
 
+const isMobile = ref(false);
+
 const handleLogout = () => {
   authStore.logOut();
   router.push("/");
+};
+const openMobileMenu = () => {
+  isMobile.value = !isMobile.value;
 };
 </script>
 
@@ -35,11 +42,23 @@ const handleLogout = () => {
             >
           </div>
           <div class="logoutProfile" v-else>
-            <a @click="handleLogout" class="logOutBtn">Log out <LogOutIcon/></a>
-            <RouterLink to="/account-settings"><img :src="avatar" alt="" :key="freelancer"/></RouterLink>
+            <a @click="handleLogout" class="logOutBtn"
+              >Log out <LogOutIcon
+            /></a>
+            <RouterLink to="/account-settings"
+              ><img :src="avatar" alt="" :key="freelancer"
+            /></RouterLink>
           </div>
         </nav>
-        <div v-if="authStore.user" class="categories">
+        <div class="mobileMenu">
+          <p>Categories</p>
+          <MenuIcon @click="openMobileMenu" class="menuIcon" />
+        </div>
+        <div
+          v-if="authStore.user"
+          class="categories"
+          :class="{ categoriesMobile: isMobile }"
+        >
           <RouterLink class="homePage" to="/home-page">Home</RouterLink>
           <RouterLink to="/wood-work">Wood work</RouterLink>
           <RouterLink to="/metal-work">Metal work</RouterLink>
@@ -74,8 +93,8 @@ nav {
   right: 0;
   z-index: 100;
   transition: 0.4s;
-  padding: 1rem 5rem 1.5rem 5rem;
-  border-bottom: 1px solid grey;
+  padding: 1rem 5rem 1rem 5rem;
+  /* border-bottom: 1px solid grey; */
   background-color: white;
 }
 nav a {
@@ -100,9 +119,9 @@ nav > div {
   outline: none;
   color: black;
 }
-.loginBtn:hover{
-    transform: scale(0.98);
-  }
+.loginBtn:hover {
+  transform: scale(0.98);
+}
 .registerBtn {
   padding: 10px 20px;
   color: white;
@@ -112,9 +131,9 @@ nav > div {
   margin-left: 12px;
   font-weight: bold;
 }
-.registerBtn:hover{
-    transform: scale(0.98);
-  }
+.registerBtn:hover {
+  transform: scale(0.98);
+}
 .logOutBtn {
   padding: 10px 20px;
   color: white;
@@ -128,9 +147,9 @@ nav > div {
   align-items: center;
   gap: 5px;
 }
-.logOutBtn:hover{
-    transform: scale(0.98);
-  }
+.logOutBtn:hover {
+  transform: scale(0.98);
+}
 .categories {
   position: absolute;
   padding: 1rem;
@@ -144,12 +163,22 @@ nav > div {
   justify-content: space-evenly;
   align-items: center;
   z-index: 100;
-  background-image: linear-gradient(to bottom, rgb(251, 81, 115), #ffa4a1);
-
+  background: white;
 }
-/* .categories .homePage {
+.mobileMenu {
+  display: none;
+}
+.menuIcon {
+  cursor: pointer;
+  padding: 3px;
+  background: crimson;
+  color: white;
+  border-radius: 4px;
+}
+
+.categories .homePage {
   color: crimson;
-} */
+}
 .categories a {
   text-decoration: none;
   color: black;
@@ -160,12 +189,12 @@ nav > div {
   text-decoration-thickness: 2px;
   text-decoration-color: #f4605b;
 }
-.logoutProfile{
-  gap:20px;
+.logoutProfile {
+  gap: 20px;
 }
-img{
+img {
   width: 2.8em;
-  margin-top:4px;
+  margin-top: 4px;
 }
 @media only screen and (max-width: 768px) {
   nav {
@@ -176,14 +205,69 @@ img{
     padding-left: 0;
     justify-content: space-between;
     margin-right: 10px;
-    margin-left: 10px;;
+    margin-left: 10px;
   }
   .loginBtn {
     display: none;
   }
-  .logOutBtn{
+  .logOutBtn {
     padding: 6px 12px;
   }
-
+  .categories {
+    padding: 0;
+    padding-right: 15px;
+  }
+  .categories a {
+    display: none;
+  }
+  .categoriesMobile {
+    position: absolute;
+    padding: 1rem;
+    position: fixed;
+    top: 8rem;
+    right: 0;
+    left: 0;
+    border-top: 1px solid #ccc;
+    display: grid;
+    justify-content: start;
+    gap: 10px;
+    z-index: 100;
+    /* background-image: linear-gradient(to bottom, #fff, #fff, #e6e6e6 80%); */
+    background: white;
+    transition: 0.5s cubic-bezier(0.05, -0.42, 0.37, 1.63);
+    border-bottom: 1px solid #a2a2a2;
+  }
+  .categoriesMobile a {
+    width:100vw;
+    display: revert;
+    padding:5px;
+  }
+  .categoriesMobile a:hover{
+    background: #b3b3b3;
+    transition: .2s;
+    text-decoration: none;
+  }
+  .mobileMenu {
+    position: fixed;
+    top: 5rem;
+    right: 0;
+    left: 0;
+    justify-content: flex-end;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-right: 10px;
+    background: white;
+    border-bottom: 1px solid #a2a2a2;
+    border-top: 1px solid #a2a2a2;
+    z-index: 1001;
+  }
+  .mobileMenu > p {
+    font-weight: bold;
+  }
+  /* .menuIcon {
+    display: flex;
+    justify-content: flex-end;
+  } */
 }
 </style>
