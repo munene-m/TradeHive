@@ -451,7 +451,7 @@ h3 {
   -webkit-backdrop-filter: blur(5px); /* For Safari */
   display: grid !important;
   place-items: center;
-  z-index: 1000;
+  z-index: 1002;
 }
 .modal-container {
   background: #fff;

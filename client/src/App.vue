@@ -94,7 +94,7 @@ nav {
   z-index: 100;
   transition: 0.4s;
   padding: 1rem 5rem 1rem 5rem;
-  /* border-bottom: 1px solid grey; */
+  border-bottom: 1px solid grey;
   background-color: white;
 }
 nav a {
