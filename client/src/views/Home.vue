@@ -51,7 +51,7 @@ const handleSubmitStart = () => {
 
 <style scoped>
 /* main {
-  
+
   
 } */
 .pageTitle{
@@ -174,6 +174,7 @@ hr {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 0;
   }
   .hero-content h1 {
     font-size: 2.5rem;
