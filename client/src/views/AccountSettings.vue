@@ -365,7 +365,8 @@ form {
   background: #fff;
 }
 label {
-  font-size: 16px;
+  font-size: 14px;
+  font-family: inherit;
 }
 .names {
   display: flex;
@@ -396,14 +397,21 @@ input:focus {
 }
 .checkboxes {
   display: grid;
-  justify-items: start;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   background: #eee;
   border-radius: 6px;
   padding: 10px;
   margin-bottom: 18px;
   border: 2px solid #bbb;
   gap: 2px;
+}
+.checkboxes > div{
+  border: 2px solid #ccc;
+    border-radius: 2px;
+    padding: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 button {
   border: none;
