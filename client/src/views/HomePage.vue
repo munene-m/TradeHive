@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watchEffect, reactive, computed } from "vue";
+import { onMounted, ref, watchEffect, reactive, computed,onBeforeMount } from "vue";
 import { useAuthStore } from "../stores/auth";
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers } from "@vuelidate/validators";
@@ -14,72 +14,50 @@ const router = useRouter();
 const authStore = useAuthStore();
 const getUser = authStore.getUser();
 // const jobsInCategory = authStore.jobsInCategory();
-const jobRecommendations = ref([]);
-const freelancerRecommendations = ref([]);
-const uniqueFreelancers = ref([])
+// const jobRecommendations = ref([]);
+// const freelancerRecommendations = ref([]);
+const jobs = authStore.jobsInCategory();
+const freelancers = authStore.freelancersInCatgory();
+
+//this computed property first filters out any empty arrays in authStore.freelancers. Then it uses the map() method to loop through each non-empty
+//array and create a new filtered array that only contains unique items. It uses the Map object to keep track of which items have already been 
+//added to the new array. If the item is not in the Map, it is added to the Map and added to the new array. Finally the method filters out any
+// resulting empty arrays 
+const nonEmptyFreelancers = computed(() => {
+  const uniqueItems = new Map();
+  return authStore.freelancers
+    .filter((freelancer) => freelancer.length > 0)
+    .map((freelancer) =>
+      freelancer.filter((item) => {
+        if (!uniqueItems.has(item._id)) {
+          uniqueItems.set(item._id, true);
+          return true;
+        }
+        return false;
+        
+      })
+      
+    )
+    .filter((freelancer) => freelancer.length > 0);
+});
+
+const nonEmptyJobs = computed(() => {
+  return authStore.jobs.filter((job) => job.length > 0);
+});
 
 let showModal = ref(false);
 function jobForm() {
   showModal.value = true;
 }
 
+
 onMounted(() => {
   getUser;
-  getCategoryData;
-  getFreelancers;
+  jobs;
+  freelancers;
 });
 
-function filterCategories(category) {
-  return authStore.category.filter((item) => item === category);
-}
 
-async function getCategoryData(category) {
-  try {
-    await axios.get(`http://localhost:3000/services/service/${category}`).then((response) => {
-        // Handle the response data
-        console.log(jobRecommendations.value);
-        jobRecommendations.value.push(response.data);
-      });
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-async function getFreelancers(category) {
-  try {
-    await axios.get(`http://localhost:3000/auth/freelancers/${category}`).then((response) => {
-      const freelancers = response.data
-
-      // Filter out duplicates
-      const filteredData = freelancers.filter((freelancer) => {
-        const exists = uniqueFreelancers.value.some((uniqueFreelancer) => {
-          return JSON.stringify(uniqueFreelancer) === JSON.stringify(freelancer)
-        })
-        return !exists
-      });
-
-      // Add unique freelancers to the array
-      filteredData.forEach((freelancer) => {
-        uniqueFreelancers.value.push(freelancer)
-        freelancerRecommendations.value.push(freelancer)
-        console.log(freelancer)
-      })
-    })
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-authStore.category.forEach((category) => {
-  // Filter the array to create a new array with only the current category
-  const filteredCategories = filterCategories(category);
-
-  // Call the getCategoryData function with the first item in the filtered array
-  if (filteredCategories.length > 0) {
-    getCategoryData(filteredCategories[0]);
-    getFreelancers(filteredCategories[0]);
-  }
-});
 const serviceStore = useServiceStore();
 const formData = reactive({
   name: "",
@@ -136,7 +114,9 @@ const handleModal = async () => {
 </script>
 
 <template>
-  <div :class="[authStore.role === 'Client' ? headerClass : headerIfFreelancer, ]">
+  <div
+    :class="[authStore.role === 'Client' ? headerClass : headerIfFreelancer]"
+  >
     <div class="headerInfo">
       <h1>Welcome, {{ authStore.firstname }}</h1>
       <img src="../assets/images/Group 2.png" alt="" />
@@ -260,40 +240,46 @@ const handleModal = async () => {
   <div class="jobs">
     <div class="recommendations" v-if="authStore.role === 'Freelancer'">
       <h2 class="RecoTitle">Recommended jobs for you</h2>
-      <div v-if="jobRecommendations !== null">
-        <div id="service" v-for="job in jobRecommendations[0]" :key="job._id">
-          <h2>Job title - {{ job.name }}</h2>
-          <p>Job description - {{ job.description }}</p>
-          <p>Duration - {{ job.duration }}</p>
-          <p>Payment - {{ job.price }}</p>
-          <button
-            @click="router.push({ path: `/home-page/${job._id}` })"
-            class="showDetails"
-          >
-            Show details
-          </button>
+      <div v-if="nonEmptyJobs !== null">
+        <div id="service" v-for="(jobList, index) in nonEmptyJobs" :key="index">
+          <div v-for="job in jobList" :key="job._id">
+            <h2>Job title - {{ job.name }}</h2>
+            <p>Job description - {{ job.description }}</p>
+            <p>Duration - {{ job.duration }}</p>
+            <p>Payment - {{ job.price }}</p>
+            <button
+              @click="router.push({ path: `/home-page/${job._id}` })"
+              class="showDetails"
+            >
+              Show details
+            </button>
+          </div>
         </div>
       </div>
     </div>
     <div id="freelancerPage" v-else-if="authStore.role === 'Client'">
       <h2 class="RecoTitle">Recommended freelancers for you</h2>
-      <div class="freelancerGrid" v-if="freelancerRecommendations !== null">
+      <div class="freelancerGrid" v-if="nonEmptyFreelancers !== null">
         <div
-          id="freelancer"
-          v-for="freelancer in freelancerRecommendations"
-          :key="freelancer._id"
+          class="gridItem"
+          v-for="(freelancerList, index) in nonEmptyFreelancers"
+          :key="index"
         >
-          <h2>{{ freelancer.firstname }} {{ freelancer.lastname }}</h2>
-          <p>Location: {{ freelancer.location }}</p>
-          <p>Working hours - {{ freelancer.workingHours }}</p>
-          <button
-            @click="
-              router.push({ path: `/home-page/freelancer/${freelancer._id}` })
-            "
-            class="showDetails"
-          >
-            Show details
-          </button>
+          <div id="freelancer" v-for="freelancer in freelancerList" :key="freelancer._id">
+            
+            <h2>{{ freelancer.firstname }} {{ freelancer.lastname }}</h2>
+            <p>Location: {{ freelancer.location }}</p>
+            <p>Working hours - {{ freelancer.workingHours }}</p>
+            <button
+              @click="
+                router.push({ path: `/home-page/freelancer/${freelancer._id}` })
+              "
+              class="showDetails"
+            >
+              Show details
+            </button>
+            <hr>
+          </div>
         </div>
       </div>
     </div>
@@ -371,8 +357,11 @@ const handleModal = async () => {
   margin-right: 4rem;
   margin-left: 4rem;
 }
+.gridItem{
+  display: contents;
+}
 #freelancer {
-  border: 1px solid #707070;
+  border: 2px solid #707070;
   border-radius: 8px;
   width: 60%;
   padding: 10px 20px;
@@ -424,7 +413,7 @@ button {
   cursor: pointer;
   align-items: center;
 }
-.postjobBtn:hover{
+.postjobBtn:hover {
   transform: scale(0.98);
 }
 h3 {
@@ -468,7 +457,7 @@ h3 {
   display: flex;
   align-items: center;
   flex-direction: row;
-  gap:5px;
+  gap: 5px;
 }
 .clientInfo > div {
   width: 100%;
@@ -571,25 +560,25 @@ button[type="submit"] {
     margin: 1em;
   }
   .select {
-  font-size: 0.8rem;
+    font-size: 0.8rem;
   }
 }
-@media only screen and (max-width: 800px){
-  .header{
+@media only screen and (max-width: 800px) {
+  .header {
     display: grid;
     place-items: center;
     grid-template-rows: repeat(2, 1fr);
   }
-  .headerInfo{
-    width:100%;
+  .headerInfo {
+    width: 100%;
   }
-  .headerInfo h1{
-    margin:0;
+  .headerInfo h1 {
+    margin: 0;
     margin-left: 0;
     margin-right: 0;
-    font-size: 90%
+    font-size: 90%;
   }
-  .createJob{
+  .createJob {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -598,31 +587,31 @@ button[type="submit"] {
     border: none;
     padding: 0;
   }
-  .headerInfo img{
-  display: none;
-}
-.createJob p{
-  margin:0;
-}
-.freelancerGrid{
-  margin-left: 0;
-  margin-right: 0;
-}
-.jobs{
-  display: flex;
+  .headerInfo img {
+    display: none;
+  }
+  .createJob p {
+    margin: 0;
+  }
+  .freelancerGrid {
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+  .jobs {
+    display: flex;
     align-items: center;
     justify-content: center;
     margin-right: 1em;
     margin-left: 1em;
+  }
+  .RecoTitle {
+    margin: 0;
+    text-align: center;
+  }
+  #freelancer {
+    width: 80%;
+    margin: auto;
+  }
 }
-.RecoTitle{
-  margin:0;
-  text-align: center;
-}
-#freelancer{
-  width:80%;
-  margin: auto;
-}
-}
-
 </style>
