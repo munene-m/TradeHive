@@ -50,13 +50,13 @@ const getFreelancers = axios.get(`http://localhost:3000/auth/freelancers/${categ
   </div>
     <div class="clientPage" v-if="authStore.role === 'Client'">
         <p v-if="freelancers === []">No freelancers in this category yet</p>
-        <div v-else class="freelancerGrid">
+        <div v-else class="freelancerGrid" >
           <div  id="freelancer" v-for="freelancer in freelancers[0]" :key="freelancer._id">
           <h2>{{ freelancer.firstname }} {{ freelancer.lastname }}</h2>
           <p>Location: {{ freelancer.location }}</p>
           <p>Working hours - {{ freelancer.workingHours }}</p>
           <p class="freelancerContact">Contact - {{ freelancer.contact }}</p>
-          <p>Rating: <vue3-star-ratings/></p>
+          <p>Rating: </p>
         </div>
         </div>
     </div>
