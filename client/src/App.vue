@@ -7,8 +7,10 @@ import { createAvatar } from "@dicebear/core";
 import { pixelArt } from "@dicebear/collection";
 import MenuIcon from "./assets/icons/MenuIcon.vue";
 import { ref } from "vue";
+
 const authStore = useAuthStore();
 const router = useRouter();
+
 
 const avatar = createAvatar(pixelArt, {
   seed: Math.random("John"),
@@ -236,6 +238,8 @@ img {
     background: white;
     transition: 0.5s cubic-bezier(0.05, -0.42, 0.37, 1.63);
     border-bottom: 1px solid #a2a2a2;
+    box-shadow: #0000001a 0 20px 25px -5px, #0000000a 0 10px 10px -5px;
+
   }
   .categoriesMobile a {
     width:100vw;
