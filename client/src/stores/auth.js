@@ -18,8 +18,10 @@ export const useAuthStore = defineStore({
     services: JSON.parse(localStorage.getItem("Services")),
     clientRole: JSON.parse(localStorage.getItem("clientRole")),
     freelancerRole: JSON.parse(localStorage.getItem("freelancerRole")),
-    freelancers: [],
+    // freelancers: [],
     userDetails: JSON.parse(localStorage.getItem("userDetails")),
+    jobs: [],
+    freelancers: []
   }),
 
   getters: {},
@@ -65,7 +67,6 @@ export const useAuthStore = defineStore({
           this.lastname = response.lastname
           this.email = response.email
           this.role = response.role
-          console.log(this.role)
           this.userId = response._id
           this.category = response.category
           console.log(this.category)
@@ -89,12 +90,34 @@ export const useAuthStore = defineStore({
     },
     async jobsInCategory() {
       console.log("this.usercategory >> ",this.userCategory)
+      const categoryPromises = this.category.map(async (item) => {
+        const response = await axios.get(`http://localhost:3000/services/service/${item}`)
+        if (response.data.length > 0) {
+          return response.data 
+        }
+        return null
+      })
+      const resolvedItems = await Promise.all(categoryPromises)
+      this.jobs = resolvedItems.filter(item => item !== null)
+      console.log(resolvedItems);
 
-      const url = `http://localhost:3000/services/service/${this.userCategory}`;
-      const res = await axios.get(url)
-      console.log(res.data)
-      this.services = res.data
-      localStorage.setItem("Services", JSON.stringify(this.services))
+      // const url = `http://localhost:3000/services/service/${this.userCategory}`;
+      // const res = await axios.get(url)
+      // console.log(res.data)
+      // this.services = res.data
+      // localStorage.setItem("Services", JSON.stringify(this.services))
+    },
+    async freelancersInCatgory(){
+      const freelancerPromises = this.category.map(async (item) => {
+        const res = await axios.get(`http://localhost:3000/auth/freelancers/${item}`)
+        if(res.data.length > 0){
+          return res.data
+        }
+        return null
+      })
+      const resolvedItems = await Promise.all(freelancerPromises)
+      this.freelancers = resolvedItems.filter(item => item !== null)
+      console.log(resolvedItems);
     },
     async updateClient(category, contact) {
       await axios.put(`http://localhost:3000/auth/update/${this.userId}`, {
