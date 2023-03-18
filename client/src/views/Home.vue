@@ -1,8 +1,11 @@
 <script setup>
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
+
+
 const authStore = useAuthStore();
 const router = useRouter();
+
 const handleSubmit = () => {
   router.push("/register");
 };
@@ -35,7 +38,7 @@ const handleSubmitStart = () => {
     </div>
     <hr />
     <div class="body-content">
-      <div class="freelancersCard">
+      <div class="freelancersCard" >
         <h2>Freelancers</h2>
         <img src="../assets/images/networkImage.svg" alt="" />
         <p>As a freelancer, gain access to clients hiring from various locations in your categories of expertise.</p>
@@ -102,9 +105,9 @@ const handleSubmitStart = () => {
 .hero-content button:hover{
   transform: scale(0.96);
 }
-.community-img img {
+/* .community-img img {
   padding: 0 4em;
-}
+} */
 hr {
   margin: 1em 4em;
 }
@@ -131,7 +134,8 @@ hr {
   border-radius: 11px;
   max-width: 300px;
   background-image: linear-gradient(0deg, #fff, #fff, #eeeeee 80%);
-
+  border:1px solid #ccc;
+  box-shadow: #0000001a 0 20px 25px -5px, #0000000a 0 10px 10px -5px;
 }
 .freelancersCard p{
   text-align: center;
@@ -153,6 +157,8 @@ hr {
   border-radius: 11px;
   max-width: 300px;
   background-image: linear-gradient(to top, #fff, #fff, #eeeeee 95%);
+  box-shadow: #0000001a 0 20px 25px -5px, #0000000a 0 10px 10px -5px;
+  border:1px solid #ccc;
 }
 .clientsCard p{
   text-align: center;
