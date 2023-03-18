@@ -1,9 +1,9 @@
 const asyncHandler = require('express-async-handler')
 const authModel = require('../models/Auth')
 const jwt = require('jsonwebtoken')
-const consumerSecret = process.env.CONSUMER_SECRET
-const consumerKey = process.env.CONSUMER_KEY
-const axios = require('axios')
+// const consumerSecret = process.env.CONSUMER_SECRET
+// const consumerKey = process.env.CONSUMER_KEY
+// const axios = require('axios')
 
 const protect = asyncHandler( async (req, res, next) => {
     let token;

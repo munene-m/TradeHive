@@ -9,7 +9,6 @@ const authRoute = require('./routes/authRoute')
 const serviceRoute = require('./routes/serviceRoute')
 const categoryRoute = require('./routes/categoryRoute')
 const reviewRoute = require('./routes/reviewRoute')
-const paymentRoute = require('./routes/paymentRoute')
 const locationRoute = require('./routes/locationRoute')
 
 dotenv.config()
@@ -29,7 +28,6 @@ app.use("/auth", authRoute)
 app.use("/services", serviceRoute)
 app.use("/categories", categoryRoute)
 app.use("/reviews", reviewRoute)
-app.use("/payment", paymentRoute)
 app.use("/location", locationRoute)
 
 app.listen(port, () => {
