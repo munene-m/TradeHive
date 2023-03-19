@@ -15,18 +15,14 @@
   "dependencies": {
     "@dicebear/collection": "^5.3.4",
     "@dicebear/core": "^5.3.4",
-    "@fortawesome/fontawesome-svg-core": "^6.3.0",
-    "@fortawesome/free-regular-svg-icons": "^6.3.0",
-    "@fortawesome/free-solid-svg-icons": "^6.3.0",
-    "@fortawesome/vue-fontawesome": "^3.0.3",
     "@vuelidate/core": "^2.0.0",
     "@vuelidate/validators": "^2.0.0",
     "axios": "^1.3.2",
+    "gsap": "^3.11.5",
     "pinia": "^2.0.28",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
-    "vue3-carousel": "^0.2.9",
-    "vuejs3-star-ratings": "^1.0.9"
+    "vue3-carousel": "^0.2.9"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",
