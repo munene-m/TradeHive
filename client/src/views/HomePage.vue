@@ -3,8 +3,8 @@ import { onMounted, ref, watchEffect, reactive, computed,onBeforeMount } from "v
 import { useAuthStore } from "../stores/auth";
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers } from "@vuelidate/validators";
-import axios from "axios";
 import { useRouter } from "vue-router";
+import gsap from 'gsap'
 import Modal from "../components/Modal.vue";
 import { useServiceStore } from "../stores/services";
 
@@ -13,9 +13,6 @@ const headerIfFreelancer = ref("headerIfFreelancer");
 const router = useRouter();
 const authStore = useAuthStore();
 const getUser = authStore.getUser();
-// const jobsInCategory = authStore.jobsInCategory();
-// const jobRecommendations = ref([]);
-// const freelancerRecommendations = ref([]);
 const jobs = authStore.jobsInCategory();
 const freelancers = authStore.freelancersInCatgory();
 
@@ -55,6 +52,27 @@ onMounted(() => {
   getUser;
   jobs;
   freelancers;
+  gsap.fromTo(".headerInfo", {
+    opacity:0,
+    y: "-100%"
+    // duration:1.5
+  },{
+    y:0,
+    opacity:1,
+    // duration:1.5,
+    ease:"power1.out"
+  })
+  gsap.fromTo(".container", {
+    opacity:0,
+    x: "-100%"
+    // duration:1.5
+  },{
+    x:0,
+    opacity:1,
+    duration:1.5,
+    ease:"power1.out"
+  })
+  
 });
 
 
@@ -65,8 +83,7 @@ const formData = reactive({
   jobTitle: "",
   jobDesc: "",
   budget: "",
-  selectedCategory: "",
-  // selectedCurrency: ""
+  selectedCategory: ""
 });
 const rules = computed(() => {
   return {
@@ -81,8 +98,7 @@ const rules = computed(() => {
     budget: { required: helpers.withMessage("Budget is required", required) },
     selectedCategory: {
       required: helpers.withMessage("Please select a category", required),
-    },
-    // selectedCurrency: { required: helpers.withMessage("Please select a currency", required) }
+    }
   };
 });
 const v$ = useVuelidate(rules, formData);
@@ -237,7 +253,7 @@ const handleModal = async () => {
       </Modal>
     </div>
   </div>
-  <div class="jobs">
+  <div class="container">
     <div class="recommendations" v-if="authStore.role === 'Freelancer'">
       <h2 class="RecoTitle">Recommended jobs for you</h2>
       <div v-if="nonEmptyJobs !== null">
@@ -318,8 +334,9 @@ const handleModal = async () => {
   padding: 20px;
   background: #ffb8c5;
 }
-.jobs {
+.container {
   margin-left: 6rem;
+  
 }
 .header img {
   width: 15%;
@@ -334,6 +351,7 @@ const handleModal = async () => {
 .recommendations {
   position: relative;
   top: 10rem;
+  padding-bottom: 1em ;
 }
 #service {
   border: 1px solid #ccc;
@@ -598,12 +616,13 @@ button[type="submit"] {
     margin-right: 0;
     margin-bottom: 1rem;
   }
-  .jobs {
+  .container {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-right: 1em;
     margin-left: 1em;
+    margin-bottom: 1em;
   }
   .RecoTitle {
     margin: 0;
