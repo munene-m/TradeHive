@@ -1,7 +1,8 @@
 <script setup>
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
-
+import { onMounted } from "vue";
+import gsap from "gsap";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -12,6 +13,29 @@ const handleSubmit = () => {
 const handleSubmitStart = () => {
   router.push("/home-page");
 };
+
+onMounted(() => {
+  gsap.fromTo(".pageTitle", {
+    opacity:0,
+    y: "-100%"
+    // duration:1.5
+  },{
+    y:0,
+    opacity:1,
+    // duration:1.5,
+    ease:"power1.out"
+  })
+  gsap.fromTo(".container", {
+    opacity:0,
+    x: "100%"
+    // duration:1.5
+  },{
+    x:0,
+    opacity:1,
+    duration:1.5,
+    ease:"power2.inOut"
+  })
+})
 </script>
 
 <template>
