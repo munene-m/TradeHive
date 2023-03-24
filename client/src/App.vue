@@ -52,7 +52,7 @@ const openMobileMenu = () => {
             /></RouterLink>
           </div>
         </nav>
-        <div class="mobileMenu">
+        <div class="mobileMenu" v-if="authStore.user">
           <p>Categories</p>
           <MenuIcon @click="openMobileMenu" class="menuIcon" />
         </div>
@@ -95,7 +95,7 @@ nav {
   right: 0;
   z-index: 100;
   transition: 0.4s;
-  padding: 1rem 5rem 1rem 5rem;
+  padding: 1rem 5rem 1.5rem 5rem;
   border-bottom: 1px solid grey;
   background-color: white;
 }
