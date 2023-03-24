@@ -15,7 +15,7 @@
 
 `npm run dev`
 
-#### To run the server locally, navigate to the server directory using the following command:
+### To run the server locally, navigate to the server directory using the following command:
 
 `cd server`
 
