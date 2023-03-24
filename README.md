@@ -3,7 +3,7 @@
 ### This web application is built using Vue.js on the front-end and Node.js on the backend. The database of choice is MongoDB.
 
 ## Development
-### To run the vue app locally, clone the repository and navigate to the client folder using the following command:
+### To run the vue app locally, clone the repository, open the terminal on your IDE of choice and navigate to the client folder using the following command:
 
 `cd client`
 
@@ -15,7 +15,7 @@
 
 `npm run dev`
 
-### To run the server locally, navigate to the server directory using the following command:
+### To run the server locally, open another terminal and navigate to the server directory using the following command:
 
 `cd server`
 
